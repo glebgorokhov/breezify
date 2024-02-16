@@ -2,9 +2,10 @@
   "name": "class-name-minifier",
   "version": "1.0.0",
   "description": "JS tool that will make class names in your projects be as short as possible in production",
-  "main": "index.ts",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
   "scripts": {
-    "test": "test"
+    "build": "tsc"
   },
   "repository": {
     "type": "git",
@@ -33,5 +34,13 @@
   "bugs": {
     "url": "https://github.com/glebgorokhov/class-name-minifier/issues"
   },
-  "homepage": "https://github.com/glebgorokhov/class-name-minifier#readme"
+  "homepage": "https://github.com/glebgorokhov/class-name-minifier#readme",
+  "dependencies": {
+    "@types/node": "^20.11.19",
+    "acorn": "^8.11.3",
+    "acorn-walk": "^8.3.2",
+    "astring": "^1.8.6",
+    "css-tree": "^2.3.1",
+    "typescript": "^5.3.3"
+  }
 }
