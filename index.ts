@@ -7,8 +7,6 @@ const acorn = require("acorn")
 const walk = require("acorn-walk")
 const { generate } = require("astring")
 
-const folderPath = "build" // Replace with your actual folder path
-
 const ignoreClassPatterns = [
   /^fa-/,
   /^ProseMirror/,
@@ -192,7 +190,7 @@ function replaceClassNamesInJs(content: string): string {
 }
 
 // Main function to start processing
-export async function minifyClassNames() {
+export async function minifyClassNames(folderPath = "build") {
   getFilesInDirectory(folderPath)
   extractClassNamesFromFiles()
   generateObfuscatedNames()

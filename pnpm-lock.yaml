@@ -17,6 +17,9 @@ dependencies:
   astring:
     specifier: ^1.8.6
     version: 1.8.6
+  commander:
+    specifier: ^12.0.0
+    version: 12.0.0
   css-tree:
     specifier: ^2.3.1
     version: 2.3.1
@@ -46,6 +49,11 @@ packages:
   /astring@1.8.6:
     resolution: {integrity: sha512-ISvCdHdlTDlH5IpxQJIex7BWBywFWgjJSVdwst+/iQCoEYnyOaQ95+X1JGshuBjGp6nxKUy1jMgE3zPqN7fQdg==}
     hasBin: true
+    dev: false
+
+  /commander@12.0.0:
+    resolution: {integrity: sha512-MwVNWlYjDTtOjX5PiD7o5pK0UrFU/OYgcJfjjK4RaHZETNtjJqrZa9Y9ds88+A+f+d5lv+561eZ+yCKoS3gbAA==}
+    engines: {node: '>=18'}
     dev: false
 
   /css-tree@2.3.1:
