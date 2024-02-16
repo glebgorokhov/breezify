@@ -74,36 +74,30 @@ function extractClassNamesFromFiles() {
 }
 
 const safeClassNameSymbols =
-  "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ".split("")
+  "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
-const unsafeClassNameSymbols =
-  "abcdefghijklmnopqrstuvwxyz0123456789_-ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("")
-
-function getAvailableSymbols(name: string) {
-  return name.length === 1 ? safeClassNameSymbols : unsafeClassNameSymbols
-}
+const allClassNameSymbols =
+  safeClassNameSymbols + "0123456789_-"
 
 // Utility function to generate obfuscated class names
 function generateObfuscatedNames() {
   const count = classNames.size
-  let current = ""
+  let name, temp;
 
-  while (obfuscatedClassNames.length < count) {
-    if (!current) {
-      current = safeClassNameSymbols[0]
-    } else {
-      const availableSymbols = getAvailableSymbols(current)
-      const lastChar = current[current.length - 1]
-      const nextIndex = availableSymbols.indexOf(lastChar) + 1
+  for (let i = 0; i < count; i++) {
+    name = '';
+    temp = i;
 
-      if (availableSymbols[nextIndex]) {
-        current = current.slice(0, -1) + availableSymbols[nextIndex]
-      } else {
-        current = current + availableSymbols[0]
-      }
+    name += safeClassNameSymbols[temp % safeClassNameSymbols.length];
+    temp = Math.floor(temp / safeClassNameSymbols.length);
+
+    while (temp > 0) {
+      temp--;
+      name += allClassNameSymbols[temp % allClassNameSymbols.length];
+      temp = Math.floor(temp / allClassNameSymbols.length);
     }
 
-    obfuscatedClassNames.push(current)
+    obfuscatedClassNames.push(name.split('').reverse().join(''));
   }
 }
 
