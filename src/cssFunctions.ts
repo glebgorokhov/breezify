@@ -1,5 +1,6 @@
 import cssTree from "css-tree";
 import fs from "fs";
+import CleanCSS from "clean-css";
 
 // Extract class names from CSS content
 export function extractClassNames(
@@ -42,6 +43,7 @@ export function extractClassNamesFromFiles(
 export function replaceClassNamesInCSS(
   content: string,
   classMap: Record<string, string>,
+  generateCssSourceMap: boolean,
 ): string {
   // Parse the CSS content into an AST
   const ast = cssTree.parse(content);
@@ -58,5 +60,15 @@ export function replaceClassNamesInCSS(
   });
 
   // Generate the modified CSS content from the AST and return it
-  return cssTree.generate(ast);
+  const minify = new CleanCSS().minify(
+    cssTree.generate(ast, {
+      sourceMap: generateCssSourceMap,
+    }),
+  );
+
+  console.log(
+    `Saved ${minify.stats.efficiency * 100}% of CSS file size. Original: ${minify.stats.originalSize / 1024} KB, Minified: ${minify.stats.minifiedSize / 1024} KB.`,
+  );
+
+  return minify.styles;
 }

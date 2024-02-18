@@ -1,6 +1,6 @@
-import { minifyClassNames } from "./index";
+import { minifyClassNames, MinifyClassNamesOptions } from "./index";
+import { Command } from "commander";
 
-const { Command } = require("commander");
 const program = new Command();
 
 program
@@ -12,8 +12,11 @@ program
   .command("minify")
   .description("Minify class names in your build files")
   .argument("<buildPath>", "path to your build folder")
-  .action((path: string, options: {}) => {
-    minifyClassNames(path);
+  .action((path: string, options: MinifyClassNamesOptions) => {
+    minifyClassNames({
+      buildDir: path,
+      ...options,
+    });
   });
 
 program.parse();

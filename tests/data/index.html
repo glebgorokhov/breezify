@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Test HTML with Complex Classes</title>
+    <link rel="stylesheet" href="styles.css" />
+    <!-- Assume styles.css contains the provided CSS -->
+  </head>
+  <body class="dark">
+    <div class="primary-color">Primary Color</div>
+    <div id="unique-element">Unique Element</div>
+    <a href="#" target="_blank">Link with target="_blank"</a>
+    <button class="interactive">Hover over me</button>
+    <p class="decorated">This paragraph has a prefix and suffix.</p>
+
+    <!-- Complex Tailwind-like classes -->
+    <div class="lg:max-w-[50%]">Responsive Max Width 50%</div>
+    <div class="sm:p-[5px]">Small Padding 5px</div>
+    <div class="hover:bg-[red-500]">Hover to change background to red</div>
+    <input
+      type="text"
+      class="focus:border-[blue-500]"
+      placeholder="Focus on me"
+    />
+
+    <!-- Dark mode and responsive together -->
+    <div class="dark:lg:text-[green-500]">
+      Green text in dark mode on large screens
+    </div>
+
+    <!-- Custom property with calc() -->
+    <div class="custom:h-[calc(100vh_-_2rem)]">Custom Height with calc()</div>
+
+    <!-- Grid layout -->
+    <div class="grid:cols-[3]">
+      <div>Grid Item 1</div>
+      <div>Grid Item 2</div>
+      <div>Grid Item 3</div>
+    </div>
+
+    <!-- Margin and padding utilities -->
+    <div class="mx-[20px]">Horizontal Margin 20px</div>
+    <div class="my-[10px]">Vertical Margin 10px</div>
+    <div class="px-[15px]">Horizontal Padding 15px</div>
+    <div class="py-[5px]">Vertical Padding 5px</div>
+
+    <!-- Group hover -->
+    <div class="group">
+      <div class="group-hover:text-[blue-400]">
+        Text turns blue on group hover
+      </div>
+    </div>
+
+    <!-- Animation and transition -->
+    <div class="transition-[all_0.3s_ease]">Smooth Transition</div>
+    <div class="animate-[spin]">Spinning Element</div>
+  </body>
+</html>

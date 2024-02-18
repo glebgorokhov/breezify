@@ -9,24 +9,45 @@ import { generateClassMap } from "./src/classMap";
 import { replaceClassNamesInHtml } from "./src/htmlFunctions";
 import { replaceClassNamesInJs } from "./src/jsFunctions";
 
-const ignoreClassPatterns: RegExp[] = [
-  /^fa-/,
-  /^ProseMirror/,
-  /^Toastify/,
-  /^react-select/,
-  /^react-datepicker/,
-  /^nestable/,
-];
-
-const ignoreJsStringPatterns = [/^%s:/];
-
-const cssFilePattern = /\.css$/;
-const jsFilePattern = /\.js$/;
-const htmlFilePattern = /\.html$/;
+export interface MinifyClassNamesOptions {
+  buildDir?: string;
+  cssFilePattern?: RegExp;
+  jsFilePattern?: RegExp;
+  htmlFilePattern?: RegExp;
+  ignoreJsStringPatterns?: RegExp[];
+  ignoreClassPatterns?: RegExp[];
+  generateCssSourceMap?: boolean;
+}
 
 // Main function to start processing
-export async function minifyClassNames(folderPath = "build") {
-  const fileLists = getFilesInDirectory(folderPath, {
+export async function minifyClassNames(options?: MinifyClassNamesOptions) {
+  const {
+    buildDir,
+    cssFilePattern,
+    jsFilePattern,
+    htmlFilePattern,
+    ignoreJsStringPatterns,
+    ignoreClassPatterns,
+    generateCssSourceMap,
+  } = {
+    buildDir: "./dist",
+    cssFilePattern: /\.css$/,
+    jsFilePattern: /\.js$/,
+    htmlFilePattern: /\.html$/,
+    ignoreJsStringPatterns: [/^%s:/],
+    ignoreClassPatterns: [
+      /^fa-/,
+      /^ProseMirror/,
+      /^Toastify/,
+      /^react-select/,
+      /^react-datepicker/,
+      /^nestable/,
+    ],
+    generateCssSourceMap: true,
+    ...options,
+  };
+
+  const fileLists = getFilesInDirectory(buildDir, {
     js: jsFilePattern,
     css: cssFilePattern,
     html: htmlFilePattern,
@@ -42,7 +63,8 @@ export async function minifyClassNames(folderPath = "build") {
   const listsAndReplaceFunctions: [string[], (content: string) => string][] = [
     [
       fileLists.css,
-      (content: string) => replaceClassNamesInCSS(content, classMap),
+      (content: string) =>
+        replaceClassNamesInCSS(content, classMap, generateCssSourceMap),
     ],
     [
       fileLists.html,

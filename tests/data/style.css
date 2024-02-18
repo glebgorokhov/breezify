@@ -1,0 +1,194 @@
+/* Simple class selector - renamed */
+.primary-color {
+  color: blue;
+}
+
+/* Element selector */
+p {
+  margin: 10px;
+}
+
+/* ID selector - renamed */
+#unique-element {
+  background-color: grey;
+}
+
+/* Attribute selector */
+a[target="_blank"] {
+  font-weight: bold;
+}
+
+/* Pseudo-class */
+button:hover {
+  background-color: green;
+}
+
+/* Pseudo-element */
+p::first-letter {
+  font-size: 2em;
+}
+
+/* Direct child selector */
+ul > li {
+  list-style-type: none;
+}
+
+/* Adjacent sibling selector */
+h2 + p {
+  color: red;
+}
+
+/* General sibling selector */
+h2 ~ p {
+  font-style: italic;
+}
+
+/* Class with pseudo-class - renamed */
+.interactive:hover {
+  opacity: 0.8;
+}
+
+/* Complex Tailwind-like class - renamed */
+.responsive-width {
+  width: 20rem;
+}
+
+.dark-mode\:responsive-width {
+  background-color: black;
+}
+
+.responsive\:dark\:custom-width {
+  width: calc(100vh - 100px);
+}
+
+/* Attribute selector with starts-with */
+a[href^="https"] {
+  color: teal;
+}
+
+/* Attribute selector with contains */
+input[type*="text"] {
+  border: 1px solid #ccc;
+}
+
+/* Using not pseudo-class - renamed */
+:not(.exclude) {
+  border: 1px solid red;
+}
+
+/* Using ::before pseudo-element - renamed */
+.decorated::before {
+  content: "Prefix ";
+}
+
+/* Using ::after pseudo-element - renamed */
+.decorated::after {
+  content: " Suffix";
+}
+
+/* Combining multiple classes - renamed */
+.primary-secondary {
+  font-size: 16px;
+}
+
+/* Child combinator with complex selectors - renamed */
+.container > .item {
+  padding: 5px;
+}
+
+/* Adjacent sibling combinator with complex selectors - renamed */
+.header + .intro {
+  margin-top: 10px;
+}
+
+/* General sibling combinator with complex selectors - renamed */
+.footer ~ .note {
+  margin-left: 20px;
+}
+
+/* Enhanced Complex Tailwind-like Classes */
+
+/* Responsive sizing */
+.lg\:max-w-\[50\%\] {
+  max-width: 50%;
+}
+
+/* Responsive padding */
+.sm\:p-\[5px\] {
+  padding: 5px;
+}
+
+/* Hover state with complex class */
+.hover\:bg-\[red-500\]:hover {
+  background-color: #f56565;
+}
+
+/* Focus state with complexity */
+.focus\:border-\[blue-500\]:focus {
+  border-color: #4299e1;
+}
+
+/* Dark mode and responsive together */
+.dark\:lg\:text-\[green-500\] {
+  color: #48bb78;
+}
+
+/* Complex Tailwind-like class with custom property */
+.custom\:h-\[calc\(100vh_-_2rem\)\] {
+  height: calc(100vh - 2rem);
+}
+
+/* Complex class for grid layout */
+.grid\:cols-\[3\] {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+/* Complex class with variable and calc() */
+.var\:w-\[calc\(100\%_-_30px\)\] {
+  width: calc(100% - 30px);
+}
+
+/* Using Tailwind-like syntax for margin and padding together */
+.mx-\[20px\] {
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+.my-\[10px\] {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.px-\[15px\] {
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+.py-\[5px\] {
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+/* Complex class with pseudo-class */
+.group:hover .group-hover\:text-\[blue-400\] {
+  color: #63b3ed;
+}
+
+/* Animation and transition */
+.transition-\[all_0\.3s_ease\] {
+  transition: all 0.3s ease;
+}
+
+.animate-\[spin\] {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
