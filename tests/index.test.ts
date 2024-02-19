@@ -1,14 +1,14 @@
 import {
   extractClassNamesFromFiles,
   replaceClassNamesInCSS,
-} from "../src/cssFunctions";
+} from "../src/css-functions";
 import * as fs from "fs";
 import { expectedClassNames } from "./data/expected-classes";
-import { generateObfuscatedNames } from "../src/classNameGenerator";
-import { generateClassMap } from "../src/classMap";
+import { generateObfuscatedNames } from "../src/class-name-generator";
+import { generateClassMap } from "../src/class-map";
 import { describe } from "node:test";
-import { replaceClassNamesInHtml } from "../src/htmlFunctions";
-import { replaceClassNamesInJs } from "../src/jsFunctions";
+import { replaceClassNamesInHtml } from "../src/html-functions";
+import { replaceClassNamesInJs } from "../src/js-functions";
 import { skipEventListeners, skipLocalStorageMethods } from "../src/skip-rules";
 
 describe("generate and replace CSS class names", () => {
