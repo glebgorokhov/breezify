@@ -38,6 +38,18 @@ into this:
 
 _439 characters of class names reduced to 50 characters! (**90% less**)_
 
+## Why?
+
+- Reduced File Size
+- Improved Performance
+- Better Caching Efficiency
+- Optimization for Content Delivery Networks (CDNs)
+- Enhanced Compression Ratios
+- Cost Savings in Hosting and Bandwidth
+- Improved Parsing Speed by Browsers
+- Simplification for JavaScript Interactions
+- SEO Benefits
+
 ## Features
 
 - **Any framework**: Breezify updates class names in your production HTML, JS and CSS files, no matter the framework you are using.
