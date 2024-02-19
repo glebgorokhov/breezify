@@ -56,7 +56,7 @@ describe("generate and replace CSS class names", () => {
     ]);
 
     // For now, just write the replaced JS to a file for manual inspection
-    fs.writeFileSync("tests/data/index.min.js", replacedJs, "utf-8");
+    // fs.writeFileSync("tests/data/index.min.js", replacedJs, "utf-8");
 
     const expectedJs = fs.readFileSync("tests/data/index.min.js", "utf-8");
     expect(replacedJs).toEqual(expectedJs);

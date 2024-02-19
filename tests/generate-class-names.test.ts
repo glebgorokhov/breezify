@@ -1,4 +1,4 @@
-import { generateObfuscatedNames } from "../src/classNameGenerator";
+import { generateObfuscatedNames } from "../src/class-name-generator";
 
 test("generates 10000 unique classes", () => {
   const classNames = generateObfuscatedNames(

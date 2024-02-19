@@ -2,7 +2,7 @@ import { Command } from "commander";
 import {
   minifyClassNames,
   MinifyClassNamesOptions,
-} from "./src/minify-class-names";
+} from "./minify-class-names";
 
 const program = new Command();
 
@@ -13,13 +13,13 @@ program
 
 program
   .command("minify")
-  .description("Minify class names in your build files")
+  .description("Minifies class names in your build folder's files")
   .argument("<buildPath>", "path to your build folder")
-  .action((path: string, options: MinifyClassNamesOptions) => {
-    minifyClassNames({
+  .action(async (path: string, options: MinifyClassNamesOptions) => {
+    await minifyClassNames({
       buildDir: path,
       ...options,
     });
   });
 
-program.parse();
+export default program;
