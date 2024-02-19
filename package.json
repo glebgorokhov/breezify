@@ -18,7 +18,6 @@
     "build": "tsc",
     "lint": "eslint . --ext .ts --fix",
     "test": "jest",
-    "packlist": "npx npm-packlist",
     "prepublish": "pnpm lint && pnpm test && pnpm build && npm publish --dry-run",
     "publish": "pnpm lint && pnpm test && pnpm build && npm publish"
   },
