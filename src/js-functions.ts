@@ -79,7 +79,7 @@ export function replaceClassNamesInJs(
           }
         }
       },
-      Property(node, ancestors) {
+      Property(node) {
         if (node.key.type === "Literal" && typeof node.key.value === "string") {
           const updatedKey = updateClassNames(node.key.value);
           if (updatedKey !== node.key.value) {
