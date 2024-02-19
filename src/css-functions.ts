@@ -12,7 +12,10 @@ export function extractClassNames(
 
   cssTree.walk(tree, function (node) {
     if (node.type === "ClassSelector") {
-      if (!ignoreClassPatterns.some((pattern) => pattern.test(node.name))) {
+      if (
+        !ignoreClassPatterns.length ||
+        !ignoreClassPatterns.some((pattern) => pattern.test(node.name))
+      ) {
         classNames.add(node.name); // Add the class name to the Set
       }
     }

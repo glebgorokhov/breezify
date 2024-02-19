@@ -13,6 +13,31 @@ Another case is using **Tailwind CSS** or similar libraries, where you have to u
 
 However, when you are ready to deploy your website, you want to minify your code to make it faster. Breezify is a library that replaces class names in your HTML, JS and CSS files with shorter ones. This way, you can keep your code readable during development and minify it for production.
 
+Breezify turns this:
+
+```html
+<div class="w-full max-w-content px-6 md:px-9 grid mx-auto z-[1] relative gap-x-6 md:gap-x-10 gap-y-6 md:gap-y-10 grid-cols-1 md:grid-cols-2 justify-items-start items-start">
+  <a
+    href="#"
+    class="gap-2 items-center mb-10 transition-all text-theme-text-interactive dark:text-dark-text-interactive group-hover:text-theme-text-interactive-hover hover:text-theme-text-interactive-hover dark:hover:text-dark-text-interactive-hover dark:group-hover:text-dark-text-interactive-hover"
+  >
+    Carts
+  </a>
+</div>
+```
+
+into this:
+
+```html
+<div class="a b c d e f g h i j k l m n o p">
+  <a href="#" class="q r s t u v y z A B">
+    Carts
+  </a>
+</div>
+```
+
+_439 characters of class names reduced to 50 characters! (**90% less**)_
+
 ## Features
 
 - **Any framework**: Breezify updates class names in your production HTML, JS and CSS files, no matter the framework you are using.

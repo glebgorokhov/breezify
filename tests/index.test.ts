@@ -61,4 +61,38 @@ describe("generate and replace CSS class names", () => {
     const expectedJs = fs.readFileSync("tests/data/index.min.js", "utf-8");
     expect(replacedJs).toEqual(expectedJs);
   });
+
+  test("example for readme", () => {
+    const exampleClassList = extractClassNamesFromFiles(
+      ["tests/data/example.css"],
+      [],
+    );
+
+    const exampleGeneratedClasses = generateObfuscatedNames(exampleClassList);
+    const exampleClassMap = generateClassMap(
+      exampleClassList,
+      exampleGeneratedClasses,
+    );
+    const exampleContent = fs.readFileSync("tests/data/example.css", "utf-8");
+    const exampleReplacedCss = replaceClassNamesInCSS(
+      exampleContent,
+      exampleClassMap,
+      false,
+    );
+    const exampleHtml = fs.readFileSync("tests/data/example.html", "utf-8");
+    const exampleReplacedHtml = replaceClassNamesInHtml(
+      exampleHtml,
+      exampleClassMap,
+      ["class"],
+      true,
+      false,
+    );
+
+    fs.writeFileSync("tests/data/example.min.css", exampleReplacedCss, "utf-8");
+    fs.writeFileSync(
+      "tests/data/example.min.html",
+      exampleReplacedHtml,
+      "utf-8",
+    );
+  });
 });
