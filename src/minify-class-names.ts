@@ -1,4 +1,7 @@
-import { getFilesInDirectory } from "./file-functions";
+import {
+  getFilesInDirectory,
+  updateFileAndCompareSize,
+} from "./file-functions";
 import {
   extractClassNamesFromFiles,
   replaceClassNamesInCSS,
@@ -79,8 +82,11 @@ export async function minifyClassNames(options?: MinifyClassNamesOptions) {
 
   listsAndReplaceFunctions.forEach(([fileList, replaceFunction]) => {
     fileList.forEach((filePath) => {
-      const content = fs.readFileSync(filePath, "utf8");
-      fs.writeFileSync(filePath, replaceFunction(content), "utf8");
+      updateFileAndCompareSize({
+        path: filePath,
+        targetPath: filePath,
+        updateContent: replaceFunction,
+      });
     });
   });
 

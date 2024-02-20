@@ -41,3 +41,35 @@ export function getFilesInDirectory(
     html: htmlFileList,
   };
 }
+
+export function getFileSizeInKb(filePath: string) {
+  const stats = fs.statSync(filePath);
+  return (stats.size / 1024).toFixed(2);
+}
+
+export function updateFileAndCompareSize({
+  path,
+  targetPath = path,
+  updateContent,
+}: {
+  path: string;
+  targetPath: string;
+  updateContent: (content: string) => string;
+}) {
+  const content = fs.readFileSync(path, "utf8");
+  const originalSize = getFileSizeInKb(path);
+
+  const updatedContent = updateContent(content);
+  fs.writeFileSync(targetPath, updatedContent, "utf8");
+  const updatedSize = getFileSizeInKb(targetPath);
+
+  const savedSize = parseFloat(originalSize) - parseFloat(updatedSize);
+  const savedPercentage = (
+    (savedSize / parseFloat(originalSize)) *
+    100
+  ).toFixed(2);
+
+  console.log(
+    `${path} => ${targetPath}; ${originalSize}kb => ${updatedSize}kb; ${savedSize.toFixed(2)}kb saved (${savedPercentage}%)`,
+  );
+}

@@ -2,7 +2,6 @@ import {
   extractClassNamesFromFiles,
   replaceClassNamesInCSS,
 } from "../src/css-functions";
-import * as fs from "fs";
 import { expectedClassNames } from "./data/expected-classes";
 import { generateObfuscatedNames } from "../src/class-name-generator";
 import { generateClassMap } from "../src/class-map";
@@ -10,6 +9,7 @@ import { describe } from "node:test";
 import { replaceClassNamesInHtml } from "../src/html-functions";
 import { replaceClassNamesInJs } from "../src/js-functions";
 import { skipEventListeners, skipLocalStorageMethods } from "../src/skip-rules";
+import { updateFileAndCompareSize } from "../src/file-functions";
 
 describe("generate and replace CSS class names", () => {
   let classList: Set<string>;
@@ -27,39 +27,34 @@ describe("generate and replace CSS class names", () => {
   test("replace classes in CSS file", () => {
     generatedClasses = generateObfuscatedNames(classList);
     classMap = generateClassMap(classList, generatedClasses);
-    const content = fs.readFileSync("tests/data/style.css", "utf-8");
-    const replacedCss = replaceClassNamesInCSS(content, classMap, false);
 
-    // For now, just write the replaced CSS to a file for manual inspection
-    // fs.writeFileSync("tests/data/style.min.css", replacedCss, "utf-8");
-
-    const expectedCss = fs.readFileSync("tests/data/style.min.css", "utf-8");
-    expect(replacedCss).toEqual(expectedCss);
+    updateFileAndCompareSize({
+      path: "tests/data/style.css",
+      targetPath: "tests/data/style.min.css",
+      updateContent: (content) =>
+        replaceClassNamesInCSS(content, classMap, false),
+    });
   });
 
   test("replace classes in HTML file", () => {
-    const content = fs.readFileSync("tests/data/index.html", "utf-8");
-    const replacedHtml = replaceClassNamesInHtml(content, classMap);
-
-    // For now, just write the replaced HTML to a file for manual inspection
-    // fs.writeFileSync("tests/data/index.min.html", replacedHtml, "utf-8");
-
-    const expectedHtml = fs.readFileSync("tests/data/index.min.html", "utf-8");
-    expect(replacedHtml).toEqual(expectedHtml);
+    updateFileAndCompareSize({
+      path: "tests/data/index.html",
+      targetPath: "tests/data/index.min.html",
+      updateContent: (content) =>
+        replaceClassNamesInHtml(content, classMap, ["class"], false, true),
+    });
   });
 
   test("replace classes in JS file", () => {
-    const content = fs.readFileSync("tests/data/index.js", "utf-8");
-    const replacedJs = replaceClassNamesInJs(content, [], classMap, [
-      skipEventListeners,
-      skipLocalStorageMethods,
-    ]);
-
-    // For now, just write the replaced JS to a file for manual inspection
-    // fs.writeFileSync("tests/data/index.min.js", replacedJs, "utf-8");
-
-    const expectedJs = fs.readFileSync("tests/data/index.min.js", "utf-8");
-    expect(replacedJs).toEqual(expectedJs);
+    updateFileAndCompareSize({
+      path: "tests/data/index.js",
+      targetPath: "tests/data/index.min.js",
+      updateContent: (content) =>
+        replaceClassNamesInJs(content, [], classMap, [
+          skipEventListeners,
+          skipLocalStorageMethods,
+        ]),
+    });
   });
 
   test("example for readme", () => {
@@ -73,27 +68,26 @@ describe("generate and replace CSS class names", () => {
       exampleClassList,
       exampleGeneratedClasses,
     );
-    const exampleContent = fs.readFileSync("tests/data/example.css", "utf-8");
-    const exampleReplacedCss = replaceClassNamesInCSS(
-      exampleContent,
-      exampleClassMap,
-      false,
-    );
-    const exampleHtml = fs.readFileSync("tests/data/example.html", "utf-8");
-    const exampleReplacedHtml = replaceClassNamesInHtml(
-      exampleHtml,
-      exampleClassMap,
-      ["class"],
-      true,
-      false,
-    );
 
-    fs.writeFileSync("tests/data/example.min.css", exampleReplacedCss, "utf-8");
-    fs.writeFileSync(
-      "tests/data/example.min.html",
-      exampleReplacedHtml,
-      "utf-8",
-    );
+    updateFileAndCompareSize({
+      path: "tests/data/example.css",
+      targetPath: "tests/data/example.min.css",
+      updateContent: (content) =>
+        replaceClassNamesInCSS(content, exampleClassMap, false),
+    });
+
+    updateFileAndCompareSize({
+      path: "tests/data/example.html",
+      targetPath: "tests/data/example.min.html",
+      updateContent: (content) =>
+        replaceClassNamesInHtml(
+          content,
+          exampleClassMap,
+          ["class"],
+          true,
+          false,
+        ),
+    });
   });
 
   test("tailwind homepage", () => {
@@ -101,42 +95,30 @@ describe("generate and replace CSS class names", () => {
       ["tests/data/tailwind-homepage.css"],
       [/^dark$/],
     );
-
     const exampleGeneratedClasses = generateObfuscatedNames(exampleClassList);
     const exampleClassMap = generateClassMap(
       exampleClassList,
       exampleGeneratedClasses,
     );
-    const exampleContent = fs.readFileSync(
-      "tests/data/tailwind-homepage.css",
-      "utf-8",
-    );
-    const exampleReplacedCss = replaceClassNamesInCSS(
-      exampleContent,
-      exampleClassMap,
-      false,
-    );
-    const exampleHtml = fs.readFileSync(
-      "tests/data/tailwind-homepage.html",
-      "utf-8",
-    );
-    const exampleReplacedHtml = replaceClassNamesInHtml(
-      exampleHtml,
-      exampleClassMap,
-      ["class"],
-      false,
-      true,
-    );
 
-    fs.writeFileSync(
-      "tests/data/tailwind-homepage.min.css",
-      exampleReplacedCss,
-      "utf-8",
-    );
-    fs.writeFileSync(
-      "tests/data/tailwind-homepage.min.html",
-      exampleReplacedHtml,
-      "utf-8",
-    );
+    updateFileAndCompareSize({
+      path: "tests/data/tailwind-homepage.css",
+      targetPath: "tests/data/tailwind-homepage.min.css",
+      updateContent: (content) =>
+        replaceClassNamesInCSS(content, exampleClassMap, false),
+    });
+
+    updateFileAndCompareSize({
+      path: "tests/data/tailwind-homepage.html",
+      targetPath: "tests/data/tailwind-homepage.min.html",
+      updateContent: (content) =>
+        replaceClassNamesInHtml(
+          content,
+          exampleClassMap,
+          ["class"],
+          false,
+          true,
+        ),
+    });
   });
 });

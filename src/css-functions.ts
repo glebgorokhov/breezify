@@ -69,9 +69,5 @@ export function replaceClassNamesInCSS(
     }),
   );
 
-  console.log(
-    `Saved ${minify.stats.efficiency * 100}% of CSS file size. Original: ${minify.stats.originalSize / 1024} KB, Minified: ${minify.stats.minifiedSize / 1024} KB.`,
-  );
-
   return minify.styles;
 }
