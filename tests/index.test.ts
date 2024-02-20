@@ -1,15 +1,16 @@
 import {
+  extractClassesAndGenerateMap,
   extractClassNamesFromFiles,
   replaceClassNamesInCSS,
 } from "../src/css-functions";
 import { expectedClassNames } from "./data/expected-classes";
 import { generateObfuscatedNames } from "../src/class-name-generator";
 import { generateClassMap } from "../src/class-map";
-import { describe } from "node:test";
 import { replaceClassNamesInHtml } from "../src/html-functions";
 import { replaceClassNamesInJs } from "../src/js-functions";
 import { skipEventListeners, skipLocalStorageMethods } from "../src/skip-rules";
 import { updateFileAndCompareSize } from "../src/file-functions";
+import { test, expect, describe } from "vitest";
 
 describe("generate and replace CSS class names", () => {
   let classList: Set<string>;
@@ -91,14 +92,9 @@ describe("generate and replace CSS class names", () => {
   });
 
   test("tailwind homepage", () => {
-    const exampleClassList = extractClassNamesFromFiles(
+    const exampleClassMap = extractClassesAndGenerateMap(
       ["tests/data/tailwind-homepage.css"],
       [/^dark$/],
-    );
-    const exampleGeneratedClasses = generateObfuscatedNames(exampleClassList);
-    const exampleClassMap = generateClassMap(
-      exampleClassList,
-      exampleGeneratedClasses,
     );
 
     updateFileAndCompareSize({

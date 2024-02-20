@@ -1,6 +1,8 @@
-import cssTree from "css-tree";
+import * as cssTree from "css-tree";
 import fs from "fs";
 import CleanCSS from "clean-css";
+import { generateObfuscatedNames } from "./class-name-generator";
+import { generateClassMap } from "./class-map";
 
 // Extract class names from CSS content
 export function extractClassNames(
@@ -70,4 +72,13 @@ export function replaceClassNamesInCSS(
   );
 
   return minify.styles;
+}
+
+export function extractClassesAndGenerateMap(
+  fileList: string[],
+  ignoreClassPatterns: RegExp[],
+) {
+  const classList = extractClassNamesFromFiles(fileList, ignoreClassPatterns);
+  const generatedClasses = generateObfuscatedNames(classList);
+  return generateClassMap(classList, generatedClasses);
 }

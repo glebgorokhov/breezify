@@ -3,6 +3,7 @@ import {
   updateFileAndCompareSize,
 } from "./file-functions";
 import {
+  extractClassesAndGenerateMap,
   extractClassNamesFromFiles,
   replaceClassNamesInCSS,
 } from "./css-functions";
@@ -10,20 +11,10 @@ import { generateObfuscatedNames } from "./class-name-generator";
 import { generateClassMap } from "./class-map";
 import { replaceClassNamesInHtml } from "./html-functions";
 import { replaceClassNamesInJs } from "./js-functions";
-import fs from "fs";
-
-export interface MinifyClassNamesOptions {
-  buildDir?: string;
-  cssFilePattern?: RegExp;
-  jsFilePattern?: RegExp;
-  htmlFilePattern?: RegExp;
-  ignoreJsStringPatterns?: RegExp[];
-  ignoreClassPatterns?: RegExp[];
-  generateCssSourceMap?: boolean;
-}
+import { BreezifyOptions } from "./options";
 
 // Main function to start processing
-export async function minifyClassNames(options?: MinifyClassNamesOptions) {
+export async function minifyClassNames(options?: BreezifyOptions) {
   const {
     buildDir,
     cssFilePattern,
@@ -37,15 +28,8 @@ export async function minifyClassNames(options?: MinifyClassNamesOptions) {
     cssFilePattern: /\.css$/,
     jsFilePattern: /\.js$/,
     htmlFilePattern: /\.html$/,
-    ignoreJsStringPatterns: [/^%s:/],
-    ignoreClassPatterns: [
-      /^fa-/,
-      /^ProseMirror/,
-      /^Toastify/,
-      /^react-select/,
-      /^react-datepicker/,
-      /^nestable/,
-    ],
+    ignoreJsStringPatterns: [],
+    ignoreClassPatterns: [],
     generateCssSourceMap: true,
     ...options,
   };
@@ -56,12 +40,10 @@ export async function minifyClassNames(options?: MinifyClassNamesOptions) {
     html: htmlFilePattern,
   });
 
-  const classNames = extractClassNamesFromFiles(
+  const classMap = extractClassesAndGenerateMap(
     fileLists.css,
     ignoreClassPatterns,
   );
-  const obfuscatedClassNames: string[] = generateObfuscatedNames(classNames);
-  const classMap = generateClassMap(classNames, obfuscatedClassNames);
 
   const listsAndReplaceFunctions: [string[], (content: string) => string][] = [
     [

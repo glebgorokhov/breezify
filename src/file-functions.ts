@@ -1,6 +1,11 @@
 // Get a list of all files in the directory and subdirectories
 import fs, { Dirent } from "fs";
 import path from "path";
+import chalk from "chalk";
+
+export function getRelativePath(filePath: string) {
+  return path.relative(process.cwd(), filePath);
+}
 
 export function getFilesInDirectory(
   directory: string,
@@ -11,9 +16,10 @@ export function getFilesInDirectory(
   const htmlFileList: string[] = [];
 
   function getFilePaths(directory: string) {
-    fs.readdirSync(directory, { withFileTypes: true }).forEach(
+    fs.readdirSync(getRelativePath(directory), { withFileTypes: true }).forEach(
       (entry: Dirent) => {
         const entryPath = path.join(directory, entry.name);
+
         if (entry.isDirectory()) {
           getFilePaths(entryPath); // Recursive call for nested directories
         } else {
@@ -43,7 +49,7 @@ export function getFilesInDirectory(
 }
 
 export function getFileSizeInKb(filePath: string) {
-  const stats = fs.statSync(filePath);
+  const stats = fs.statSync(getRelativePath(filePath));
   return (stats.size / 1024).toFixed(2);
 }
 
@@ -70,6 +76,7 @@ export function updateFileAndCompareSize({
   ).toFixed(2);
 
   console.log(
-    `${path} => ${targetPath}; ${originalSize}kb => ${updatedSize}kb; ${savedSize.toFixed(2)}kb saved (${savedPercentage}%)`,
+    chalk.yellow("Write: ") +
+      `${Array.from(new Set([path, targetPath])).join("=>")}; ${originalSize}kb => ${updatedSize}kb; ${savedSize.toFixed(2)}kb saved (${chalk.green(savedPercentage + "%")})`,
   );
 }

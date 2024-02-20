@@ -1,6 +1,7 @@
 // Replace class names in JS content with care
-import acorn, { AnyNode } from "acorn";
-import walk from "acorn-walk";
+import * as acorn from "acorn";
+import { AnyNode } from "acorn";
+import * as walk from "acorn-walk";
 import { escapeString } from "./helpers";
 import { generate } from "astring";
 
