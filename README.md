@@ -40,15 +40,18 @@ _439 characters of class names reduced to 50 characters! (**90% less**)_
 
 ## Why?
 
-- Reduced File Size
-- Improved Performance
-- Better Caching Efficiency
-- Optimization for Content Delivery Networks (CDNs)
-- Enhanced Compression Ratios
-- Cost Savings in Hosting and Bandwidth
-- Improved Parsing Speed by Browsers
-- Simplification for JavaScript Interactions
-- SEO Benefits
+- **Maximum File Size Reduction**: Utilizing ultra-short class names in production minimizes CSS, HTML, and JavaScript file sizes, leading to faster load times.
+- **Optimal Performance**: The reduced file sizes ensure peak performance, especially beneficial for users on limited bandwidth connections.
+- **Superior Caching**: Smaller files get cached more efficiently, speeding up repeat visits and improving user experience without affecting development workflow.
+- **Enhanced Minification Efficiency**: These concise class names enhance the efficiency of minification and compression, reducing file sizes more than traditional optimizations.
+- **Seamless Development Experience**: Since class names are only shortened in production, developers can work with descriptive names during development, ensuring ease of maintenance without additional documentation.
+- **Faster CDN Delivery**: The smaller file sizes improve speed across Content Delivery Networks, enhancing global site accessibility and performance.
+- **Improved Compression Ratios**: Short, repetitive class names lead to better compression, resulting in smaller file sizes during transmission.
+- **Reduced Hosting and Bandwidth Costs**: Smaller files translate to lower data transfer costs, particularly beneficial for high-traffic sites.
+- **Quicker Browser Parsing and Rendering**: The reduced data volume allows browsers to parse and apply styles faster, contributing to a quicker user interface.
+- **Efficient JavaScript Interactions**: With class names being shortened only in production, JavaScript development can use meaningful names, while production benefits from efficiency in DOM manipulation.
+- **Indirect SEO Benefits**: Enhanced loading times and site performance can positively influence search engine rankings due to better user experience metrics.
+- **Automatic Debugging Compatibility**: The build process simplifies debugging since developers work with meaningful class names, with the conversion to shorter names happening automatically for production.
 
 ## Features
 
