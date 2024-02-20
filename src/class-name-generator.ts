@@ -22,7 +22,7 @@ export function generateObfuscatedNames(classNames: Set<string>) {
       temp = Math.floor(temp / allClassNameSymbols.length);
     }
 
-    obfuscatedClassNames.push(name.split("").reverse().join(""));
+    obfuscatedClassNames.push(name);
   }
 
   return obfuscatedClassNames;

@@ -95,4 +95,48 @@ describe("generate and replace CSS class names", () => {
       "utf-8",
     );
   });
+
+  test("tailwind homepage", () => {
+    const exampleClassList = extractClassNamesFromFiles(
+      ["tests/data/tailwind-homepage.css"],
+      [/^dark$/],
+    );
+
+    const exampleGeneratedClasses = generateObfuscatedNames(exampleClassList);
+    const exampleClassMap = generateClassMap(
+      exampleClassList,
+      exampleGeneratedClasses,
+    );
+    const exampleContent = fs.readFileSync(
+      "tests/data/tailwind-homepage.css",
+      "utf-8",
+    );
+    const exampleReplacedCss = replaceClassNamesInCSS(
+      exampleContent,
+      exampleClassMap,
+      false,
+    );
+    const exampleHtml = fs.readFileSync(
+      "tests/data/tailwind-homepage.html",
+      "utf-8",
+    );
+    const exampleReplacedHtml = replaceClassNamesInHtml(
+      exampleHtml,
+      exampleClassMap,
+      ["class"],
+      false,
+      true,
+    );
+
+    fs.writeFileSync(
+      "tests/data/tailwind-homepage.min.css",
+      exampleReplacedCss,
+      "utf-8",
+    );
+    fs.writeFileSync(
+      "tests/data/tailwind-homepage.min.html",
+      exampleReplacedHtml,
+      "utf-8",
+    );
+  });
 });
