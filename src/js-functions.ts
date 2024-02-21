@@ -4,6 +4,7 @@ import { AnyNode } from "acorn";
 import * as walk from "acorn-walk";
 import { escapeString } from "./helpers";
 import { generate } from "astring";
+import chalk from "chalk";
 
 export type SkipRule = (node: AnyNode, ancestors: AnyNode[]) => boolean;
 
@@ -64,14 +65,31 @@ export function replaceClassNamesInJs(
   function getFunctionDeclarationFromAncestors(
     ancestors: AnyNode[],
     updates: string[],
+    changeStartEnd: [number, number],
   ) {
     const ancestor =
-      ancestors.length > 3 ? ancestors[ancestors.length - 4] : ancestors[0];
+      ancestors.length > 2
+        ? ancestors[ancestors.length - 2]
+        : ancestors[ancestors.length - 1];
 
-    const functionCode = content.slice(ancestor.start, ancestor.end);
+    let functionCode = content.slice(ancestor.start, ancestor.end);
+    const relativeStartEnd = [
+      changeStartEnd[0] - ancestor.start,
+      changeStartEnd[1] - ancestor.start,
+    ];
+    const functionCodeAsArray = functionCode.split("");
+    functionCodeAsArray.splice(
+      relativeStartEnd[0],
+      relativeStartEnd[1] - relativeStartEnd[0],
+      chalk.bold(chalk.cyan(updates[0])),
+    );
+    functionCode = functionCodeAsArray.join("");
+
     console.log(
-      `Replaced ${updates.map((x) => `"${x}"`).join(" with ")} in function:`,
-      functionCode,
+      `${chalk.yellow("Replace:")} ${updates.map((x, n) => chalk[n ? "green" : "red"](`"${x}"`)).join(" => ")} in function:
+
+${functionCode}
+`,
     );
   }
 
@@ -89,10 +107,11 @@ export function replaceClassNamesInJs(
         if (typeof node.value === "string") {
           const updatedValue = updateClassNames(node.value);
           if (updatedValue !== node.value) {
-            getFunctionDeclarationFromAncestors(ancestors as AnyNode[], [
-              node.value,
-              updatedValue,
-            ]);
+            getFunctionDeclarationFromAncestors(
+              ancestors as AnyNode[],
+              [node.value, updatedValue],
+              [node.start, node.end],
+            );
             node.value = updatedValue;
             node.raw = `'${escapeString(updatedValue)}'`;
           }
@@ -102,10 +121,11 @@ export function replaceClassNamesInJs(
         if (node.key.type === "Literal" && typeof node.key.value === "string") {
           const updatedKey = updateClassNames(node.key.value);
           if (updatedKey !== node.key.value) {
-            getFunctionDeclarationFromAncestors(ancestors as AnyNode[], [
-              node.key.value,
-              updatedKey,
-            ]);
+            getFunctionDeclarationFromAncestors(
+              ancestors as AnyNode[],
+              [node.key.value, updatedKey],
+              [node.key.start, node.key.end],
+            );
             node.key.value = updatedKey;
             node.key.raw = `'${escapeString(updatedKey)}'`;
           }
@@ -122,10 +142,11 @@ export function replaceClassNamesInJs(
         node.quasis.forEach((quasi) => {
           const updatedValue = updateClassNames(quasi.value.raw);
           if (updatedValue !== quasi.value.raw) {
-            getFunctionDeclarationFromAncestors(ancestors as AnyNode[], [
-              quasi.value.raw,
-              updatedValue,
-            ]);
+            getFunctionDeclarationFromAncestors(
+              ancestors as AnyNode[],
+              [quasi.value.raw, updatedValue],
+              [quasi.start, quasi.end],
+            );
             quasi.value.raw = updatedValue;
             quasi.value.cooked = updatedValue;
           }
