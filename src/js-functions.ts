@@ -61,6 +61,20 @@ export function replaceClassNamesInJs(
     return value;
   }
 
+  function getFunctionDeclarationFromAncestors(
+    ancestors: AnyNode[],
+    updates: string[],
+  ) {
+    const ancestor =
+      ancestors.length > 3 ? ancestors[ancestors.length - 4] : ancestors[0];
+
+    const functionCode = content.slice(ancestor.start, ancestor.end);
+    console.log(
+      `Replaced ${updates.map((x) => `"${x}"`).join(" with ")} in function:`,
+      functionCode,
+    );
+  }
+
   if (mode === "acorn") {
     const ast = acorn.parse(content, {
       ecmaVersion: 2020,
@@ -75,15 +89,23 @@ export function replaceClassNamesInJs(
         if (typeof node.value === "string") {
           const updatedValue = updateClassNames(node.value);
           if (updatedValue !== node.value) {
+            getFunctionDeclarationFromAncestors(ancestors as AnyNode[], [
+              node.value,
+              updatedValue,
+            ]);
             node.value = updatedValue;
             node.raw = `'${escapeString(updatedValue)}'`;
           }
         }
       },
-      Property(node) {
+      Property(node, ancestors) {
         if (node.key.type === "Literal" && typeof node.key.value === "string") {
           const updatedKey = updateClassNames(node.key.value);
           if (updatedKey !== node.key.value) {
+            getFunctionDeclarationFromAncestors(ancestors as AnyNode[], [
+              node.key.value,
+              updatedKey,
+            ]);
             node.key.value = updatedKey;
             node.key.raw = `'${escapeString(updatedKey)}'`;
           }
@@ -96,10 +118,14 @@ export function replaceClassNamesInJs(
           }
         }
       },
-      TemplateLiteral(node) {
+      TemplateLiteral(node, ancestors) {
         node.quasis.forEach((quasi) => {
           const updatedValue = updateClassNames(quasi.value.raw);
           if (updatedValue !== quasi.value.raw) {
+            getFunctionDeclarationFromAncestors(ancestors as AnyNode[], [
+              quasi.value.raw,
+              updatedValue,
+            ]);
             quasi.value.raw = updatedValue;
             quasi.value.cooked = updatedValue;
           }
