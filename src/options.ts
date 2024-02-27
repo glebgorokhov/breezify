@@ -1,5 +1,7 @@
 import { SkipRule } from "./js-functions";
 import { Options } from "html-minifier";
+import merge from "lodash.merge";
+import { DeepPartial } from "./helpers";
 
 /**
  * Options for pretty
@@ -153,3 +155,9 @@ export const minifyHtmlDefaultOptions: Options = {
   caseSensitive: true,
   collapseBooleanAttributes: true,
 };
+
+export function withDefaultOptions(
+  options: DeepPartial<BreezifyOptions> = {},
+): BreezifyOptions {
+  return merge(defaultOptions, options);
+}

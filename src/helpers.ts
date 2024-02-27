@@ -11,3 +11,13 @@ export function escapeString(str: string) {
     .replace(/\r/g, "\\r") // Escape carriage returns
     .replace(/\t/g, "\\t"); // Escape tabs
 }
+
+/**
+ * Make type be partial on all levels
+ * @param obj {Record<string, any>} - The object to clone
+ */
+export type DeepPartial<T> = T extends object
+  ? {
+      [P in keyof T]?: DeepPartial<T[P]>;
+    }
+  : T;

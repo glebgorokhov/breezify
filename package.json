@@ -9,31 +9,17 @@
   },
   "homepage": "https://github.com/glebgorokhov/breezify#readme",
   "private": false,
-  "types": "./lib/cjs/types/index.d.ts",
-  "main": "./lib/cjs/index.js",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
   "files": [
     "lib/**/*"
   ],
-  "type": "module",
-  "exports": {
-    ".": {
-      "import": {
-        "types": "./lib/esm/types/index.d.ts",
-        "default": "./lib/esm/index.mjs"
-      },
-      "require": {
-        "types": "./lib/cjs/types/index.d.ts",
-        "default": "./lib/cjs/index.js"
-      }
-    }
-  },
   "scripts": {
     "clean": "rm -rf ./lib",
-    "build": "pnpm run clean && pnpm run build:esm && pnpm run build:cjs",
-    "build:esm": "tsc -p ./tsconfig.esm.json && mv lib/esm/index.js lib/esm/index.mjs",
-    "build:cjs": "tsc -p ./tsconfig.cjs.json",
+    "build": "pnpm run clean && tsc",
     "lint": "eslint . --ext .ts --fix",
     "test": "vitest",
+    "cli-preview": "pnpm run build && node ./lib",
     "prepack": "pnpm lint && pnpm test && pnpm build",
     "prepublish": "pnpm prepack && npm publish --dry-run",
     "publish": "pnpm prepack && npm publish"

@@ -8,15 +8,15 @@ import {
 } from "./css-functions";
 import { replaceClassNamesInHtml } from "./html-functions";
 import { replaceClassNamesInJs } from "./js-functions";
-import { BreezifyOptions, defaultOptions } from "./options";
-import merge from "lodash.merge";
+import { BreezifyOptions, withDefaultOptions } from "./options";
+import { DeepPartial } from "./helpers";
 
 /**
  * Minify class names in CSS, JS, and HTML files.
  * @param options {BreezifyOptions} - Options to configure the minification process.
  */
-export async function breezify(options: Partial<BreezifyOptions> = {}) {
-  const { files, css, js, html } = merge(defaultOptions, options);
+export async function breezify(options: DeepPartial<BreezifyOptions> = {}) {
+  const { files, css, js, html } = withDefaultOptions(options);
 
   const fileLists = getFilesInDirectory(files);
   const classMap = extractClassesAndGenerateMap(fileLists.css, css);

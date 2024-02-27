@@ -1,4 +1,4 @@
-import cssTree from "css-tree";
+import * as cssTree from "css-tree";
 import fs from "fs";
 import CleanCSS from "clean-css";
 import { generateObfuscatedNames } from "./class-name-generator";
@@ -99,14 +99,17 @@ export function replaceClassNamesInCSS(
   });
 
   // Generate the modified CSS content from the AST and return it
-  let newContent = cssTree.generate(ast, {
-    sourceMap,
+  let newContent: string = cssTree.generate(ast, {
+    sourceMap: false,
   });
 
   // Minify the CSS content
   if (minify) {
-    const minify = new CleanCSS().minify(newContent);
-    newContent = minify.styles;
+    const minifyResult = new CleanCSS({
+      sourceMap,
+    }).minify(newContent);
+
+    newContent = minifyResult.styles;
   }
 
   return newContent;
