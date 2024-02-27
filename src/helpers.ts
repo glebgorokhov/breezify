@@ -1,4 +1,7 @@
-// Helper function to escape special characters in strings
+/**
+ * Escape special characters in a string
+ * @param str {string} - The string to escape
+ */
 export function escapeString(str: string) {
   return str
     .replace(/\\/g, "\\\\") // Escape backslashes

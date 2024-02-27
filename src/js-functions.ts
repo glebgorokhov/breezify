@@ -1,20 +1,29 @@
 // Replace class names in JS content with care
-import * as acorn from "acorn";
+import acorn from "acorn";
 import { AnyNode } from "acorn";
-import * as walk from "acorn-walk";
+import walk from "acorn-walk";
 import { escapeString } from "./helpers";
 import { generate } from "astring";
 import chalk from "chalk";
+import { JSOptions } from "./options";
 
 export type SkipRule = (node: AnyNode, ancestors: AnyNode[]) => boolean;
 
 export function replaceClassNamesInJs(
   content: string,
-  ignoreJsStringPatterns: RegExp[],
   classMap: Record<string, string>,
-  skipRules: SkipRule[] = [],
-  mode: "acorn" | "simple" = "acorn",
+  jsOptions: JSOptions,
 ): string {
+  const {
+    ignoreStringPatterns = [],
+    skipRules = [],
+    mode = "acorn",
+  } = jsOptions;
+
+  const ignoreRegExpPatterns = ignoreStringPatterns.map(
+    (pattern) => new RegExp(pattern, "m"),
+  );
+
   let newContent = "";
 
   // Unescape classMap's keys
@@ -41,8 +50,8 @@ export function replaceClassNamesInJs(
   // Function to update class names in string literals
   function updateClassNames(value: string) {
     if (
-      !ignoreJsStringPatterns.length ||
-      !ignoreJsStringPatterns.some((pattern) => pattern.test(value))
+      !ignoreRegExpPatterns.length ||
+      !ignoreRegExpPatterns.some((pattern) => pattern.test(value))
     ) {
       // Split the string by spaces, assuming it could contain multiple class names
       const classNames = value.split(/\s+/);
@@ -118,6 +127,8 @@ ${functionCode}
         }
       },
       Property(node, ancestors) {
+        if (shouldSkip(node, ancestors as AnyNode[])) return;
+
         if (node.key.type === "Literal" && typeof node.key.value === "string") {
           const updatedKey = updateClassNames(node.key.value);
           if (updatedKey !== node.key.value) {
@@ -139,6 +150,8 @@ ${functionCode}
         }
       },
       TemplateLiteral(node, ancestors) {
+        if (shouldSkip(node, ancestors as AnyNode[])) return;
+
         node.quasis.forEach((quasi) => {
           const updatedValue = updateClassNames(quasi.value.raw);
           if (updatedValue !== quasi.value.raw) {

@@ -1,5 +1,10 @@
 import { AnyNode, Expression } from "acorn";
 
+/**
+ * Skip event listeners
+ * @param node {AnyNode} - AST node
+ * @param ancestors {AnyNode[]} - Ancestors of the AST node
+ */
 export function skipEventListeners(
   node: AnyNode,
   ancestors: AnyNode[],
@@ -21,6 +26,11 @@ export function skipEventListeners(
   return false;
 }
 
+/**
+ * Skip local storage methods
+ * @param node {AnyNode} - AST node
+ * @param ancestors {AnyNode[]} - Ancestors of the AST node
+ */
 export function skipLocalStorageMethods(
   node: AnyNode,
   ancestors: AnyNode[],

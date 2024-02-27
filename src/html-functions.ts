@@ -1,24 +1,26 @@
 import { serialize, parse } from "parse5";
-import { minify, Options } from "html-minifier";
+import { minify } from "html-minifier";
 import pretty from "pretty";
+import { HTMLOptions, minifyHtmlDefaultOptions } from "./options";
 
 type Node = {
   attrs?: { name: string; value: string }[];
   childNodes?: Node[];
 };
 
-// Replace class names in HTML content with care
+/**
+ * Replace class names in HTML content with new class names
+ * @param content {string} - HTML content
+ * @param classMap {Record<string, string>} - Map of old class names to new class names
+ * @param htmlOptions {HTMLOptions} - HTML options
+ */
 export function replaceClassNamesInHtml(
   content: string,
   classMap: Record<string, string>,
-  attributeNames: string[] = ["class"],
-  beautify:
-    | boolean
-    | {
-        ocd: boolean;
-      } = false,
-  minifyHtml: boolean | Options = true,
+  htmlOptions: HTMLOptions,
 ): string {
+  const { attributes = ["class"], beautify, minify: minifyHtml } = htmlOptions;
+
   // Unescape classMap's keys
   const unescapedClassMap: Record<string, string> = {};
   for (const [key, value] of Object.entries(classMap)) {
@@ -32,7 +34,7 @@ export function replaceClassNamesInHtml(
   function traverseNode(node: Node) {
     if (node.attrs) {
       node.attrs.forEach((attr) => {
-        if (attributeNames.includes(attr.name)) {
+        if (attributes.includes(attr.name)) {
           // Split the class attribute to handle multiple classes
           const classes = attr.value.split(" ");
           const replacedClasses = classes.map(
@@ -57,30 +59,18 @@ export function replaceClassNamesInHtml(
     scriptingEnabled: true,
   });
 
+  // Beautify the HTML content
   if (beautify) {
     newContent = pretty(newContent, {
       ocd: beautify === true ? true : beautify.ocd,
     });
   }
 
+  // Minify the HTML content
   if (minifyHtml) {
     newContent = minify(
       newContent,
-      minifyHtml === true
-        ? {
-            minifyCSS: true,
-            minifyJS: true,
-            collapseWhitespace: true,
-            useShortDoctype: true,
-            sortClassName: true,
-            removeScriptTypeAttributes: true,
-            removeStyleLinkTypeAttributes: true,
-            removeRedundantAttributes: true,
-            removeComments: true,
-            caseSensitive: true,
-            collapseBooleanAttributes: true,
-          }
-        : minifyHtml,
+      minifyHtml === true ? minifyHtmlDefaultOptions : minifyHtml,
     );
   }
 

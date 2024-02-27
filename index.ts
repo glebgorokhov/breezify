@@ -1,6 +1,6 @@
-import { minifyClassNames } from "./src/minify-class-names";
+import { breezify } from "./src/breezify";
 import program from "./src/program";
 
 program.parse();
 
-export { minifyClassNames };
+export default breezify;

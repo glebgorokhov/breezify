@@ -1,65 +1,124 @@
 // Get a list of all files in the directory and subdirectories
-import fs, { Dirent } from "fs";
-import path from "path";
+import * as fs from "fs";
+import * as path from "path";
 import chalk from "chalk";
+import { globSync } from "glob";
+import { FilesOptions } from "./options";
 
 export function getRelativePath(filePath: string) {
   return path.relative(process.cwd(), filePath);
 }
 
-export function getFilesInDirectory(
-  directory: string,
-  patterns: { js: RegExp; css: RegExp; html: RegExp },
-) {
-  const cssFileList: string[] = [];
-  const jsFileList: string[] = [];
-  const htmlFileList: string[] = [];
+/**
+ * Get a list of all files in the directory and subdirectories
+ * @param filesOptions {FilesOptions} - Options to configure the files to include or exclude
+ */
+export function getFilesInDirectory(filesOptions: FilesOptions) {
+  const { pattern, buildDir, outputDir, ignore } = filesOptions;
 
-  function getFilePaths(directory: string) {
-    fs.readdirSync(getRelativePath(directory), { withFileTypes: true }).forEach(
-      (entry: Dirent) => {
-        const entryPath = path.join(directory, entry.name);
-
-        if (entry.isDirectory()) {
-          getFilePaths(entryPath); // Recursive call for nested directories
-        } else {
-          const patternListPairs: [RegExp, string[]][] = [
-            [patterns.css, cssFileList],
-            [patterns.js, jsFileList],
-            [patterns.html, htmlFileList],
-          ];
-
-          patternListPairs.forEach(([pattern, fileList]) => {
-            if (pattern.test(entry.name)) {
-              fileList.push(entryPath);
-            }
-          });
-        }
-      },
-    );
+  // Check if directory exists
+  if (!fs.existsSync(buildDir)) {
+    throw new Error(`The directory "${buildDir}" does not exist.`);
   }
 
-  getFilePaths(directory);
+  if (outputDir) {
+    if (outputDir === buildDir) {
+      throw new Error(
+        `You have specified the same directory for both "buildDir" and "outputDir".`,
+      );
+    }
 
-  return {
-    css: cssFileList,
-    js: jsFileList,
-    html: htmlFileList,
+    if (fs.existsSync(outputDir)) {
+      fs.rmSync(outputDir, { recursive: true, force: true });
+      console.log(
+        chalk.yellow("Removed output directory: ") + getRelativePath(outputDir),
+      );
+    }
+
+    copyDirectory(buildDir, outputDir);
+  }
+
+  // Set the current working directory
+  const cwd = outputDir || buildDir;
+
+  const fileList = globSync(pattern, {
+    cwd: cwd,
+  });
+
+  const listsByType: {
+    css: string[];
+    js: string[];
+    html: string[];
+  } = {
+    css: [],
+    js: [],
+    html: [],
   };
+
+  // Add the files to the lists by type
+  fileList.forEach((file) => {
+    const filePath = path.join(buildDir, file);
+    const ext = path.extname(filePath).slice(1);
+
+    if (
+      ignore.length &&
+      ignore.some((pattern) => new RegExp(pattern).test(filePath))
+    ) {
+      return;
+    }
+
+    if (ext in listsByType) {
+      listsByType[ext as keyof typeof listsByType].push(filePath);
+    }
+  });
+
+  return listsByType;
 }
 
+/**
+ * Copy a directory and its contents to a target directory
+ * @param source {string} - Source directory
+ * @param target {string} - Target directory
+ */
+export function copyDirectory(source: string, target: string) {
+  const files = fs.readdirSync(source);
+
+  files.forEach((file) => {
+    const filePath = path.join(source, file);
+    const targetPath = path.join(target, file);
+    const fileStat = fs.statSync(filePath);
+
+    if (fileStat.isDirectory()) {
+      fs.mkdirSync(targetPath, { recursive: true });
+      copyDirectory(filePath, targetPath);
+    } else {
+      fs.copyFileSync(filePath, targetPath);
+    }
+  });
+}
+
+/**
+ * Get the file size in kilobytes
+ * @param filePath {string} - Path to the file
+ */
 export function getFileSizeInKb(filePath: string) {
-  const stats = fs.statSync(getRelativePath(filePath));
+  const stats = fs.statSync(filePath);
   return (stats.size / 1024).toFixed(2);
 }
 
+/**
+ * Update a file's content and compare the size difference
+ * @param path {string} - Path to the file
+ * @param targetPath {string} - Path to the target file
+ * @param updateContent {(content: string) => string} - Function to update the content
+ */
 export function updateFileAndCompareSize({
   path,
   targetPath = path,
   updateContent,
 }: {
   path: string;
-  targetPath: string;
+  targetPath?: string;
   updateContent: (content: string) => string;
 }) {
   const content = fs.readFileSync(path, "utf8");

@@ -1,4 +1,8 @@
-// Function that generates a map of original class names to obfuscated class names
+/**
+ * Generate obfuscated class names
+ * @param classNames {Set<string>} - Set of class names
+ * @param obfuscatedClassNames {string[]} - Array of obfuscated class names
+ */
 export function generateClassMap(
   classNames: Set<string>,
   obfuscatedClassNames: string[],

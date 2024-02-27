@@ -9,17 +9,34 @@
   },
   "homepage": "https://github.com/glebgorokhov/breezify#readme",
   "private": false,
-  "main": "lib/index.js",
-  "types": "lib/index.d.ts",
+  "types": "./lib/cjs/types/index.d.ts",
+  "main": "./lib/cjs/index.js",
   "files": [
-    "lib"
+    "lib/**/*"
   ],
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./lib/esm/types/index.d.ts",
+        "default": "./lib/esm/index.mjs"
+      },
+      "require": {
+        "types": "./lib/cjs/types/index.d.ts",
+        "default": "./lib/cjs/index.js"
+      }
+    }
+  },
   "scripts": {
-    "build": "tsc",
+    "clean": "rm -rf ./lib",
+    "build": "pnpm run clean && pnpm run build:esm && pnpm run build:cjs",
+    "build:esm": "tsc -p ./tsconfig.esm.json && mv lib/esm/index.js lib/esm/index.mjs",
+    "build:cjs": "tsc -p ./tsconfig.cjs.json",
     "lint": "eslint . --ext .ts --fix",
     "test": "vitest",
-    "prepublish": "pnpm lint && pnpm test && pnpm build && npm publish --dry-run",
-    "publish": "pnpm lint && pnpm test && pnpm build && npm publish"
+    "prepack": "pnpm lint && pnpm test && pnpm build",
+    "prepublish": "pnpm prepack && npm publish --dry-run",
+    "publish": "pnpm prepack && npm publish"
   },
   "repository": {
     "type": "git",
@@ -46,6 +63,8 @@
     "css-tree": "^2.3.1",
     "glob": "^10.3.10",
     "html-minifier": "^4.0.0",
+    "lodash.merge": "^4.6.2",
+    "lodash.set": "^4.3.2",
     "parse5": "^7.1.2",
     "pretty": "^2.0.0"
   },
@@ -53,6 +72,8 @@
     "@types/clean-css": "^4.2.11",
     "@types/css-tree": "^2.3.6",
     "@types/html-minifier": "^4.0.5",
+    "@types/lodash.merge": "^4.6.9",
+    "@types/lodash.set": "^4.3.9",
     "@types/node": "^20.11.19",
     "@types/pretty": "^2.0.3",
     "@typescript-eslint/eslint-plugin": "^7.0.1",
