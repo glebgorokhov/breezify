@@ -1,5 +1,5 @@
-import { breezify } from "./src/breezify";
-import program from "./src/program";
+import { breezify } from "./src/breezify.js";
+import program from "./src/program.js";
 
 program.parse();
 

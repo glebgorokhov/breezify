@@ -1,15 +1,15 @@
 import {
   getFilesInDirectory,
   updateFileAndCompareSize,
-} from "./file-functions";
+} from "./file-functions.js";
 import {
   extractClassesAndGenerateMap,
   replaceClassNamesInCSS,
-} from "./css-functions";
-import { replaceClassNamesInHtml } from "./html-functions";
-import { replaceClassNamesInJs } from "./js-functions";
-import { BreezifyOptions, withDefaultOptions } from "./options";
-import { DeepPartial } from "./helpers";
+} from "./css-functions.js";
+import { replaceClassNamesInHtml } from "./html-functions.js";
+import { replaceClassNamesInJs } from "./js-functions.js";
+import { BreezifyOptions, withDefaultOptions } from "./options.js";
+import { DeepPartial } from "./helpers.js";
 
 /**
  * Minify class names in CSS, JS, and HTML files.

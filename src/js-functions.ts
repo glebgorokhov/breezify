@@ -2,10 +2,10 @@
 import * as acorn from "acorn";
 import { AnyNode } from "acorn";
 import * as walk from "acorn-walk";
-import { escapeString } from "./helpers";
+import { escapeString } from "./helpers.js";
 import { generate } from "astring";
 import chalk from "chalk";
-import { JSOptions } from "./options";
+import { JSOptions } from "./options.js";
 
 export type SkipRule = (node: AnyNode, ancestors: AnyNode[]) => boolean;
 

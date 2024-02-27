@@ -3,7 +3,7 @@ import * as fs from "fs";
 import * as path from "path";
 import chalk from "chalk";
 import { globSync } from "glob";
-import { FilesOptions } from "./options";
+import { FilesOptions } from "./options.js";
 
 export function getRelativePath(filePath: string) {
   return path.relative(process.cwd(), filePath);

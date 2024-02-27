@@ -1,7 +1,7 @@
 import { serialize, parse } from "parse5";
 import { minify } from "html-minifier";
 import pretty from "pretty";
-import { HTMLOptions, minifyHtmlDefaultOptions } from "./options";
+import { HTMLOptions, minifyHtmlDefaultOptions } from "./options.js";
 
 type Node = {
   attrs?: { name: string; value: string }[];

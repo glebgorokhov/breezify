@@ -1,4 +1,4 @@
-import { CSSOptions } from "./options";
+import { CSSOptions } from "./options.js";
 
 // All possible characters for first symbol of class name
 const safeClassNameSymbols =

@@ -1,9 +1,9 @@
 import * as cssTree from "css-tree";
 import fs from "fs";
 import CleanCSS from "clean-css";
-import { generateObfuscatedNames } from "./class-name-generator";
-import { generateClassMap } from "./class-map";
-import { CSSOptions } from "./options";
+import { generateObfuscatedNames } from "./class-name-generator.js";
+import { generateClassMap } from "./class-map.js";
+import { CSSOptions } from "./options.js";
 
 /**
  * Extract class names from CSS content

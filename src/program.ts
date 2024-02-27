@@ -1,6 +1,6 @@
 import { Command } from "commander";
-import { breezify } from "./breezify";
-import { BreezifyOptions, defaultOptions } from "./options";
+// import { breezify } from "./breezify.js";
+import { BreezifyOptions, defaultOptions } from "./options.js";
 import set from "lodash.set";
 
 const program = new Command();
@@ -52,7 +52,7 @@ program
   .action(async (path: string, options) => {
     const allOptions: BreezifyOptions = defaultOptions;
 
-    console.log(options);
+    console.log(options, allOptions);
 
     set(options, "files.buildDir", path);
 
