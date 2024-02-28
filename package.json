@@ -17,14 +17,12 @@
   ],
   "scripts": {
     "clean": "rm -rf ./lib",
-    "build": "pnpm run clean && tsc",
+    "build": "npm run clean && tsc",
     "lint": "eslint . --ext .ts --fix",
     "test": "vitest run",
     "test-watch": "vitest",
-    "cli-preview": "pnpm run build && node ./lib",
-    "prepack": "pnpm lint && pnpm test && pnpm build",
-    "prepublish": "pnpm prepack && npm publish --dry-run",
-    "publish": "pnpm prepack && npm publish"
+    "cli-preview": "npm run build && node ./lib",
+    "prepack": "npm run lint && npm run test && npm run build"
   },
   "repository": {
     "type": "git",
