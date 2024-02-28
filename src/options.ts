@@ -110,6 +110,8 @@ export type HTMLOptions = {
  * Options for Breezify
  */
 export type BreezifyOptions = {
+  /** The path to the Breezify config file */
+  config?: string;
   files: FilesOptions;
   css: CSSOptions;
   js: JSOptions;
@@ -127,7 +129,7 @@ export const defaultOptions: BreezifyOptions = {
   },
   css: {
     sourceMap: true,
-    shuffle: true,
+    shuffle: false,
     minify: true,
   },
   js: {

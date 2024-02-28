@@ -41,7 +41,6 @@
     "breezify"
   ],
   "dependencies": {
-    "@types/commander": "^2.12.2",
     "acorn": "^8.11.3",
     "acorn-walk": "^8.3.2",
     "astring": "^1.8.6",
@@ -51,6 +50,7 @@
     "css-tree": "^2.3.1",
     "glob": "^10.3.10",
     "html-minifier": "^4.0.0",
+    "inquirer": "^9.2.15",
     "lodash.merge": "^4.6.2",
     "lodash.set": "^4.3.2",
     "parse5": "^7.1.2",
@@ -60,6 +60,7 @@
     "@types/clean-css": "^4.2.11",
     "@types/css-tree": "^2.3.6",
     "@types/html-minifier": "^4.0.5",
+    "@types/inquirer": "^9.0.7",
     "@types/lodash.merge": "^4.6.9",
     "@types/lodash.set": "^4.3.9",
     "@types/node": "^20.11.19",
