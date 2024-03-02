@@ -11,6 +11,9 @@
   "private": false,
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
+  "bin": {
+    "breezify": "./lib/cli.js"
+  },
   "type": "module",
   "files": [
     "lib/**/*"

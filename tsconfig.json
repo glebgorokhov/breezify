@@ -12,6 +12,6 @@
     "skipLibCheck": true,
     "allowSyntheticDefaultImports": true,
   },
-  "files": ["./index.ts"],
+  "files": ["index.ts", "cli.ts"],
   "exclude": ["node_modules", "lib", "tests", "coverage"]
 }
