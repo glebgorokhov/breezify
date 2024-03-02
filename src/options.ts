@@ -112,6 +112,7 @@ export type HTMLOptions = {
 export type BreezifyOptions = {
   /** The path to the Breezify config file */
   config?: string;
+  ignoreConfig?: boolean;
   files: FilesOptions;
   css: CSSOptions;
   js: JSOptions;
@@ -158,8 +159,44 @@ export const minifyHtmlDefaultOptions: Options = {
   collapseBooleanAttributes: true,
 };
 
+/**
+ * Merge the default options with the provided options
+ * @param options {DeepPartial<BreezifyOptions>} - The options to merge with the default options
+ * @returns The merged options
+ */
 export function withDefaultOptions(
   options: DeepPartial<BreezifyOptions> = {},
 ): BreezifyOptions {
   return merge(defaultOptions, options);
+}
+
+/**
+ * Merge the provided options with the config options
+ * @param config {BreezifyOptions} - The config options
+ * @param options {DeepPartial<BreezifyOptions>} - The options to merge with the config options
+ * @returns The merged options
+ */
+export function mergeConfigs(
+  config: BreezifyOptions,
+  options: DeepPartial<BreezifyOptions>,
+): BreezifyOptions {
+  return merge(config, options);
+}
+
+/**
+ * Generate the content for the config file
+ * @param useTypescript {boolean} - Whether to use TypeScript
+ * @returns The content for the config file
+ */
+export function generateConfigFileContent(useTypescript: boolean) {
+  const importStatement = useTypescript
+    ? `import { BreezifyOptions } from 'breezify';\n\n`
+    : "";
+  const typeAnnotation = useTypescript ? ": BreezifyOptions" : "";
+  const jsDocType = !useTypescript
+    ? `/** @type {import('breezify').BreezifyOptions} */\n`
+    : "";
+
+  // Return file content
+  return `${importStatement}${jsDocType}const defaultOptions${typeAnnotation} = ${JSON.stringify(defaultOptions, null, 2)};\n\nexport default defaultOptions;\n`;
 }

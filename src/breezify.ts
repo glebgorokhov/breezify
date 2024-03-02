@@ -1,5 +1,6 @@
 import {
   getFilesInDirectory,
+  loadConfigFromFile,
   updateFileAndCompareSize,
 } from "./file-functions.js";
 import {
@@ -8,7 +9,7 @@ import {
 } from "./css-functions.js";
 import { replaceClassNamesInHtml } from "./html-functions.js";
 import { replaceClassNamesInJs } from "./js-functions.js";
-import { BreezifyOptions, withDefaultOptions } from "./options.js";
+import { BreezifyOptions, defaultOptions, mergeConfigs } from "./options.js";
 import { DeepPartial } from "./helpers.js";
 
 /**
@@ -16,7 +17,11 @@ import { DeepPartial } from "./helpers.js";
  * @param options {BreezifyOptions} - Options to configure the minification process.
  */
 export async function breezify(options: DeepPartial<BreezifyOptions> = {}) {
-  const { files, css, js, html } = withDefaultOptions(options);
+  const loadedConfig = !options.ignoreConfig
+    ? await loadConfigFromFile(options.config)
+    : defaultOptions;
+
+  const { files, css, js, html } = mergeConfigs(loadedConfig, options);
 
   const fileLists = getFilesInDirectory(files);
   const classMap = extractClassesAndGenerateMap(fileLists.css, css);

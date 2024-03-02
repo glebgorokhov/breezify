@@ -1,7 +1,12 @@
 import { Command, Option } from "commander";
 import inquirer from "inquirer";
-// import { breezify } from "./breezify.js";
-import { BreezifyOptions, defaultOptions, JSOptions } from "./options.js";
+import { breezify } from "./breezify.js";
+import {
+  BreezifyOptions,
+  defaultOptions,
+  generateConfigFileContent,
+  JSOptions,
+} from "./options.js";
 import set from "lodash.set";
 import fs from "fs";
 import path from "path";
@@ -20,6 +25,7 @@ program
   .description("Minify class names in your build folder's files")
   .argument("<buildPath>", "path to your build folder")
   .option("-c, --config <config>", "path to the config file")
+  .option("-ic, --ignoreConfig", "ignore the config file")
   .option("-o, --files.outputDir <outputDir>", "output directory", "dist")
   .option(
     "-p, --files.pattern <pattern>",
@@ -89,12 +95,7 @@ program
       set(allOptions, key, value);
     });
 
-    console.log(allOptions);
-
-    // await breezify({
-    //   buildDir: path,
-    //   ...options,
-    // });
+    await breezify(allOptions);
   });
 
 program
@@ -113,18 +114,20 @@ program
     const fullPath = path.join(
       process.cwd(),
       answers.path,
-      "breezify.config.json",
+      `breezify.config.js`,
     );
 
-    fs.writeFileSync(
-      fullPath,
-      JSON.stringify(defaultOptions, null, 2),
-      "utf-8",
-    );
+    try {
+      fs.writeFileSync(fullPath, generateConfigFileContent(false), "utf-8");
 
-    console.log(
-      chalk.green(`Successfully created breezify.config.json in ${fullPath}!`),
-    );
+      console.log(
+        chalk.green(`Successfully created breezify.config.js in ${fullPath}!`),
+      );
+    } catch (error) {
+      console.error(
+        chalk.red(`An error occurred while creating the config file: ${error}`),
+      );
+    }
   });
 
 export default program;

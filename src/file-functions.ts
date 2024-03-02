@@ -3,7 +3,8 @@ import * as fs from "fs";
 import * as path from "path";
 import chalk from "chalk";
 import { globSync } from "glob";
-import { FilesOptions } from "./options.js";
+import { BreezifyOptions, defaultOptions, FilesOptions } from "./options.js";
+import { register } from "ts-node";
 
 export function getRelativePath(filePath: string) {
   return path.relative(process.cwd(), filePath);
@@ -138,4 +139,43 @@ export function updateFileAndCompareSize({
     chalk.yellow("Write: ") +
       `${Array.from(new Set([path, targetPath])).join("=>")}; ${originalSize}kb => ${updatedSize}kb; ${savedSize.toFixed(2)}kb saved (${chalk.green(savedPercentage + "%")})`,
   );
+}
+
+/**
+ * Load the Breezify config from a file
+ * @param configPath {string} - Path to the Breezify config file
+ */
+export async function loadConfigFromFile(configPath?: string) {
+  register();
+
+  // If no configPath provided then we try to find the config file in the current working directory ("breezify.config.js" or "breezify.config.ts")
+  if (!configPath) {
+    const jsConfigPath = path.join(process.cwd(), "breezify.config.js");
+
+    if (fs.existsSync(jsConfigPath)) {
+      configPath = jsConfigPath;
+    } else {
+      console.log(
+        `No config file found in the current working directory. Proceeding with default options.`,
+      );
+
+      return defaultOptions;
+    }
+  }
+
+  // If a configPath is provided then we check if it exists
+  if (!fs.existsSync(configPath)) {
+    throw new Error(`The config file "${configPath}" does not exist.`);
+  }
+
+  console.log("Config file was found! Loading...");
+
+  try {
+    const config = await import(configPath);
+    console.log("Config file was loaded successfully.");
+    return config.default as BreezifyOptions;
+  } catch (error) {
+    console.log("Error loading config file. Proceeding with default options.");
+    return defaultOptions;
+  }
 }

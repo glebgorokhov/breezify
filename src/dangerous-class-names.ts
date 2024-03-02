@@ -200,8 +200,6 @@ const dangerousClassNames = [
   "obsolete",
   "legacy",
   "migration",
-  "transition",
-  "transform",
 ];
 
 /**
