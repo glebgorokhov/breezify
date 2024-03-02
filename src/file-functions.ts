@@ -22,13 +22,7 @@ export function getFilesInDirectory(filesOptions: FilesOptions) {
     throw new Error(`The directory "${buildDir}" does not exist.`);
   }
 
-  if (outputDir) {
-    if (outputDir === buildDir) {
-      throw new Error(
-        `You have specified the same directory for both "buildDir" and "outputDir".`,
-      );
-    }
-
+  if (outputDir && outputDir !== buildDir) {
     if (fs.existsSync(outputDir)) {
       fs.rmSync(outputDir, { recursive: true, force: true });
       console.log(
@@ -82,6 +76,13 @@ export function getFilesInDirectory(filesOptions: FilesOptions) {
  * @param target {string} - Target directory
  */
 export function copyDirectory(source: string, target: string) {
+  if (!fs.existsSync(target)) {
+    fs.mkdirSync(target, { recursive: true });
+    console.log(
+      chalk.yellow("Created output directory: ") + getRelativePath(target),
+    );
+  }
+
   const files = fs.readdirSync(source);
 
   files.forEach((file) => {
