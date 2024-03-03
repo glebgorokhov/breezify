@@ -6,14 +6,15 @@ import { escapeString } from "./helpers.js";
 import { generate } from "astring";
 import chalk from "chalk";
 import { JSOptions } from "./options.js";
+import { minify } from "terser";
 
 export type SkipRule = (node: AnyNode, ancestors: AnyNode[]) => boolean;
 
-export function replaceClassNamesInJs(
+export async function replaceClassNamesInJs(
   content: string,
   classMap: Record<string, string>,
   jsOptions: JSOptions,
-): string {
+): Promise<string> {
   const {
     ignoreStringPatterns = [],
     skipRules = [],
@@ -31,6 +32,9 @@ export function replaceClassNamesInJs(
   for (const [key, value] of Object.entries(classMap)) {
     unescapedClassMap[key.replace(/\\/g, "")] = value;
   }
+
+  // Array of class names
+  const classNamesArray = Object.keys(unescapedClassMap);
 
   // Should the current node be skipped?
   function shouldSkip(node: AnyNode, ancestors: AnyNode[]): boolean {
@@ -50,11 +54,18 @@ export function replaceClassNamesInJs(
   // Function to update class names in string literals
   function updateClassNames(value: string) {
     if (
-      !ignoreRegExpPatterns.length ||
-      !ignoreRegExpPatterns.some((pattern) => pattern.test(value))
+      value.trim() !== "" && !ignoreRegExpPatterns.length
+        ? true
+        : !ignoreRegExpPatterns.some((pattern) => pattern.test(value))
     ) {
       // Split the string by spaces, assuming it could contain multiple class names
       const classNames = value.split(/\s+/);
+
+      if (
+        !classNamesArray.some((className) => classNames.includes(className))
+      ) {
+        return value;
+      }
 
       // Map each class name through classMap for replacements
       return classNames
@@ -175,6 +186,15 @@ ${functionCode}
       const regex = new RegExp(`\\b${key}\\b`, "gm");
       newContent = newContent.replace(regex, value);
     }
+  }
+
+  if (jsOptions.minify) {
+    newContent = (
+      await minify(newContent, {
+        compress: true,
+        mangle: false,
+      })
+    ).code as string;
   }
 
   return newContent;

@@ -69,6 +69,12 @@ program
       .default(defaultOptions.js.mode)
       .choices(["acorn", "simple"] as JSOptions["mode"][] as string[]),
   )
+  .addOption(
+    new Option("--js.minify <minify>", "minify the output JS")
+      .default(defaultOptions.js.minify)
+      .choices(booleanChoices)
+      .argParser(booleanParser),
+  )
   .option(
     "--html.attributes <attributes...>",
     "HTML attributes to replace class names in",

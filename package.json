@@ -56,7 +56,8 @@
     "lodash.merge": "^4.6.2",
     "lodash.set": "^4.3.2",
     "parse5": "^7.1.2",
-    "pretty": "^2.0.0"
+    "pretty": "^2.0.0",
+    "terser": "^5.28.1"
   },
   "devDependencies": {
     "@types/clean-css": "^4.2.11",

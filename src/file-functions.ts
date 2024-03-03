@@ -19,7 +19,9 @@ export function getFilesInDirectory(filesOptions: FilesOptions) {
 
   // Check if directory exists
   if (!fs.existsSync(buildDir)) {
-    throw new Error(`The directory "${buildDir}" does not exist.`);
+    throw new Error(
+      `The directory "${buildDir}" does not exist. Did you forget to build your project?`,
+    );
   }
 
   if (outputDir && outputDir !== buildDir) {
@@ -37,7 +39,7 @@ export function getFilesInDirectory(filesOptions: FilesOptions) {
   const cwd = outputDir || buildDir;
 
   const fileList = globSync(pattern, {
-    cwd: cwd,
+    cwd,
   });
 
   const listsByType: {
@@ -52,7 +54,7 @@ export function getFilesInDirectory(filesOptions: FilesOptions) {
 
   // Add the files to the lists by type
   fileList.forEach((file) => {
-    const filePath = path.join(buildDir, file);
+    const filePath = path.join(cwd, file);
     const ext = path.extname(filePath).slice(1);
 
     if (
@@ -66,6 +68,8 @@ export function getFilesInDirectory(filesOptions: FilesOptions) {
       listsByType[ext as keyof typeof listsByType].push(filePath);
     }
   });
+
+  console.log(chalk.yellow(`Files to be processed`), listsByType);
 
   return listsByType;
 }
@@ -114,19 +118,19 @@ export function getFileSizeInKb(filePath: string) {
  * @param targetPath {string} - Path to the target file
  * @param updateContent {(content: string) => string} - Function to update the content
  */
-export function updateFileAndCompareSize({
+export async function updateFileAndCompareSize({
   path,
   targetPath = path,
   updateContent,
 }: {
   path: string;
   targetPath?: string;
-  updateContent: (content: string) => string;
+  updateContent: (content: string) => string | Promise<string>;
 }) {
   const content = fs.readFileSync(path, "utf8");
   const originalSize = getFileSizeInKb(path);
 
-  const updatedContent = updateContent(content);
+  const updatedContent = await updateContent(content);
   fs.writeFileSync(targetPath, updatedContent, "utf8");
   const updatedSize = getFileSizeInKb(targetPath);
 
@@ -138,7 +142,7 @@ export function updateFileAndCompareSize({
 
   console.log(
     chalk.yellow("Write: ") +
-      `${Array.from(new Set([path, targetPath])).join("=>")}; ${originalSize}kb => ${updatedSize}kb; ${savedSize.toFixed(2)}kb saved (${chalk.green(savedPercentage + "%")})`,
+      `${Array.from(new Set([path, targetPath])).join("=>")}; ${originalSize}kb => ${updatedSize}kb; ${savedSize.toFixed(2)}kb saved (${chalk[savedSize > 0 ? "green" : "red"](savedPercentage + "%")})`,
   );
 }
 

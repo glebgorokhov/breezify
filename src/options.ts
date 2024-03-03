@@ -80,6 +80,11 @@ export type JSOptions = {
    * @default "acorn"
    */
   mode?: "acorn" | "simple";
+  /**
+   * Whether to minify the output JS.
+   * @default true
+   */
+  minify?: boolean;
 };
 
 export type HTMLOptions = {
@@ -135,6 +140,7 @@ export const defaultOptions: BreezifyOptions = {
   },
   js: {
     mode: "acorn",
+    minify: true,
   },
   html: {
     attributes: ["class"],

@@ -24,17 +24,15 @@ export function extractClassNames(content: string, cssOptions: CSSOptions) {
     ) || [];
 
   function shouldInclude(className: string) {
-    return (
-      !includeClassPatterns.length ||
-      includeClassPatterns.some((pattern) => pattern.test(className))
-    );
+    return includeClassPatterns.length
+      ? includeClassPatterns.some((pattern) => pattern.test(className))
+      : true;
   }
 
   function shouldIgnore(className: string) {
-    return (
-      !ignoreClassPatterns.length ||
-      ignoreClassPatterns.some((pattern) => pattern.test(className))
-    );
+    return ignoreClassPatterns.length
+      ? ignoreClassPatterns.some((pattern) => pattern.test(className))
+      : false;
   }
 
   cssTree.walk(tree, function (node) {
@@ -67,6 +65,8 @@ export function extractClassNamesFromFiles(
       classNames.add(className);
     });
   });
+
+  console.log(Array.from(classNames));
 
   return classNames;
 }
@@ -125,6 +125,11 @@ export function extractClassesAndGenerateMap(
   cssOptions: CSSOptions,
 ) {
   const classList = extractClassNamesFromFiles(fileList, cssOptions);
+
+  if (classList.size === 0) {
+    throw new Error("No class names found in the CSS files.");
+  }
+
   const generatedClasses = generateObfuscatedNames(classList, cssOptions);
   return generateClassMap(classList, generatedClasses);
 }

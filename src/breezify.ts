@@ -26,7 +26,10 @@ export async function breezify(options: DeepPartial<BreezifyOptions> = {}) {
   const fileLists = getFilesInDirectory(files);
   const classMap = extractClassesAndGenerateMap(fileLists.css, css);
 
-  const listsAndReplaceFunctions: [string[], (content: string) => string][] = [
+  const listsAndReplaceFunctions: [
+    string[],
+    (content: string) => string | Promise<string>,
+  ][] = [
     [
       fileLists.css,
       (content: string) => replaceClassNamesInCSS(content, classMap, css),
@@ -41,15 +44,15 @@ export async function breezify(options: DeepPartial<BreezifyOptions> = {}) {
     ],
   ];
 
-  listsAndReplaceFunctions.forEach(([fileList, replaceFunction]) => {
-    fileList.forEach((filePath) => {
-      updateFileAndCompareSize({
+  for (const [fileList, replaceFunction] of listsAndReplaceFunctions) {
+    for (const filePath of fileList) {
+      await updateFileAndCompareSize({
         path: filePath,
         targetPath: filePath,
         updateContent: replaceFunction,
       });
-    });
-  });
+    }
+  }
 
   console.log("Class names have been obfuscated and replaced successfully.");
 }
