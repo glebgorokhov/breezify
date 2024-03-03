@@ -3,7 +3,6 @@ import inquirer from "inquirer";
 import { breezify } from "./breezify.js";
 import {
   BreezifyOptions,
-  defaultOptions,
   generateConfigFileContent,
   JSOptions,
 } from "./options.js";
@@ -116,7 +115,7 @@ program
     );
 
     try {
-      fs.writeFileSync(fullPath, generateConfigFileContent(false), "utf-8");
+      fs.writeFileSync(fullPath, generateConfigFileContent(), "utf-8");
 
       console.log(
         chalk.green(`Successfully created breezify.config.js in ${fullPath}!`),

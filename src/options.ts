@@ -2,6 +2,7 @@ import { SkipRule } from "./js-functions.js";
 import { Options } from "html-minifier";
 import merge from "lodash.merge";
 import { DeepPartial } from "./helpers.js";
+import fs from "fs";
 
 /**
  * Options for pretty
@@ -199,15 +200,13 @@ export function mergeConfigs(
  * @param useTypescript {boolean} - Whether to use TypeScript
  * @returns The content for the config file
  */
-export function generateConfigFileContent(useTypescript: boolean) {
-  const importStatement = useTypescript
-    ? `import { BreezifyOptions } from 'breezify';\n\n`
-    : "";
-  const typeAnnotation = useTypescript ? ": BreezifyOptions" : "";
-  const jsDocType = !useTypescript
-    ? `/** @type {import('breezify').BreezifyOptions} */\n`
-    : "";
+export function generateConfigFileContent() {
+  // Get project type from package.json to determine whether to use export or module.exports
+  const packageJson = JSON.parse(fs.readFileSync("package.json", "utf-8"));
+  const useExport = packageJson.type === "module";
+  const declarationPart = useExport ? "export default" : "module.exports =";
+  const jsDocType = `/** @type {import('breezify').BreezifyOptions} */\n`;
 
   // Return file content
-  return `${importStatement}${jsDocType}const defaultOptions${typeAnnotation} = ${JSON.stringify(defaultOptions, null, 2)};\n\nexport default defaultOptions;\n`;
+  return `${jsDocType}${declarationPart} ${JSON.stringify(defaultOptions, null, 2)}`;
 }
