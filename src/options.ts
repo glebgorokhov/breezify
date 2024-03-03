@@ -85,6 +85,11 @@ export type JSOptions = {
    * @default true
    */
   minify?: boolean;
+  /**
+   * Whether to minify inline JS (inside HTML files).
+   * @default true
+   */
+  minifyInlineJS?: boolean;
 };
 
 export type HTMLOptions = {

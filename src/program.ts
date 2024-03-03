@@ -11,6 +11,7 @@ import set from "lodash.set";
 import fs from "fs";
 import path from "path";
 import chalk from "chalk";
+import { DeepPartial } from "./helpers.js";
 
 const program = new Command();
 
@@ -23,15 +24,13 @@ program.version("1.0.0").name("breezify");
 program
   .command("do")
   .description("Minify class names in your build folder's files")
-  .argument("<buildPath>", "path to your build folder")
+  .addOption(
+    new Option("-b, --files.buildDir <buildDir>", "path to build directory"),
+  )
   .option("-c, --config <config>", "path to the config file")
   .option("-ic, --ignoreConfig", "ignore the config file")
-  .option("-o, --files.outputDir <outputDir>", "output directory", "dist")
-  .option(
-    "-p, --files.pattern <pattern>",
-    "pattern to match the files",
-    "**/*.{css,js,html}",
-  )
+  .option("-o, --files.outputDir <outputDir>", "output directory")
+  .option("-p, --files.pattern <pattern>", "pattern to match the files")
   .option("-i, --files.ignore <ignore...>", "RegExp patterns to ignore")
   .option(
     "--css.includeClassPatterns <includeClassPatterns...>",
@@ -43,20 +42,17 @@ program
   )
   .addOption(
     new Option("--css.sourceMap <sourceMap>", "generate source maps")
-      .default(defaultOptions.css.sourceMap)
       .choices(booleanChoices)
       .argParser(booleanParser),
   )
   .addOption(
     new Option("--css.shuffle <shuffle>", "shuffle class names")
-      .default(defaultOptions.css.shuffle)
       .choices(booleanChoices)
       .argParser(booleanParser),
   )
   .option("--css.prefix <prefix>", "prefix to add to class names")
   .addOption(
     new Option("--css.minify <minify>", "minify the output CSS")
-      .default(defaultOptions.css.minify)
       .choices(booleanChoices)
       .argParser(booleanParser),
   )
@@ -65,13 +61,13 @@ program
     "RegExp patterns to ignore when replacing class names in strings in JS files",
   )
   .addOption(
-    new Option("--js.mode <mode>", "mode to replace class names in JS files")
-      .default(defaultOptions.js.mode)
-      .choices(["acorn", "simple"] as JSOptions["mode"][] as string[]),
+    new Option(
+      "--js.mode <mode>",
+      "mode to replace class names in JS files",
+    ).choices(["acorn", "simple"] as JSOptions["mode"][] as string[]),
   )
   .addOption(
     new Option("--js.minify <minify>", "minify the output JS")
-      .default(defaultOptions.js.minify)
       .choices(booleanChoices)
       .argParser(booleanParser),
   )
@@ -82,20 +78,16 @@ program
   )
   .addOption(
     new Option("--html.beautify <beautify>", "beautify the output HTML")
-      .default(defaultOptions.html.beautify)
       .choices(booleanChoices)
       .argParser(booleanParser),
   )
   .addOption(
     new Option("--html.minify <minify>", "minify the output HTML")
-      .default(defaultOptions.html.minify)
       .choices(booleanChoices)
       .argParser(booleanParser),
   )
-  .action(async (path: string, options) => {
-    const allOptions: BreezifyOptions = defaultOptions;
-
-    set(allOptions, "files.buildDir", path);
+  .action(async (options) => {
+    const allOptions: DeepPartial<BreezifyOptions> = {};
 
     Object.entries(options).forEach(([key, value]) => {
       set(allOptions, key, value);

@@ -126,7 +126,7 @@ export async function updateFileAndCompareSize({
   path: string;
   targetPath?: string;
   updateContent: (content: string) => string | Promise<string>;
-}) {
+}): Promise<string> {
   const content = fs.readFileSync(path, "utf8");
   const originalSize = getFileSizeInKb(path);
 
@@ -140,9 +140,9 @@ export async function updateFileAndCompareSize({
     100
   ).toFixed(2);
 
-  console.log(
+  return (
     chalk.yellow("Write: ") +
-      `${Array.from(new Set([path, targetPath])).join("=>")}; ${originalSize}kb => ${updatedSize}kb; ${savedSize.toFixed(2)}kb saved (${chalk[savedSize > 0 ? "green" : "red"](savedPercentage + "%")})`,
+    `${Array.from(new Set([path, targetPath])).join("=>")}; ${originalSize}kb => ${updatedSize}kb; ${savedSize.toFixed(2)}kb saved (${chalk[savedSize > 0 ? "green" : "red"](savedPercentage + "%")})`
   );
 }
 

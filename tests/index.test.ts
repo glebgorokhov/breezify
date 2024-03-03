@@ -43,7 +43,12 @@ describe("generate and replace CSS class names", () => {
       path: "tests/data/index.html",
       targetPath: "tests/data/index.min.html",
       updateContent: (content) =>
-        replaceClassNamesInHtml(content, classMap, defaultOptions.html),
+        replaceClassNamesInHtml(
+          content,
+          classMap,
+          defaultOptions.html,
+          defaultOptions.js,
+        ),
     });
   });
 
@@ -85,7 +90,12 @@ describe("generate and replace CSS class names", () => {
       path: "tests/data/example.html",
       targetPath: "tests/data/example.min.html",
       updateContent: (content) =>
-        replaceClassNamesInHtml(content, exampleClassMap, defaultOptions.html),
+        replaceClassNamesInHtml(
+          content,
+          exampleClassMap,
+          defaultOptions.html,
+          defaultOptions.js,
+        ),
     });
   });
 
@@ -111,7 +121,12 @@ describe("generate and replace CSS class names", () => {
       path: "tests/data/tailwind-homepage.html",
       targetPath: "tests/data/tailwind-homepage.min.html",
       updateContent: (content) =>
-        replaceClassNamesInHtml(content, exampleClassMap, defaultOptions.html),
+        replaceClassNamesInHtml(
+          content,
+          exampleClassMap,
+          defaultOptions.html,
+          defaultOptions.js,
+        ),
     });
   });
 });

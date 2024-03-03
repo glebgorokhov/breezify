@@ -36,7 +36,7 @@ export async function breezify(options: DeepPartial<BreezifyOptions> = {}) {
     ],
     [
       fileLists.html,
-      (content: string) => replaceClassNamesInHtml(content, classMap, html),
+      (content: string) => replaceClassNamesInHtml(content, classMap, html, js),
     ],
     [
       fileLists.js,
@@ -44,14 +44,22 @@ export async function breezify(options: DeepPartial<BreezifyOptions> = {}) {
     ],
   ];
 
+  const writeMessages = [];
+
   for (const [fileList, replaceFunction] of listsAndReplaceFunctions) {
     for (const filePath of fileList) {
-      await updateFileAndCompareSize({
-        path: filePath,
-        targetPath: filePath,
-        updateContent: replaceFunction,
-      });
+      writeMessages.push(
+        await updateFileAndCompareSize({
+          path: filePath,
+          targetPath: filePath,
+          updateContent: replaceFunction,
+        }),
+      );
     }
+  }
+
+  for (const message of writeMessages) {
+    console.log(message);
   }
 
   console.log("Class names have been obfuscated and replaced successfully.");
