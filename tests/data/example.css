@@ -114,3 +114,7 @@
 .dark\:group-hover\:text-dark-text-interactive-hover {
   color: #93c5fd;
 }
+
+.aside {
+  grid-area: aside;
+}

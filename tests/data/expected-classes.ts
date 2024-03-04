@@ -28,4 +28,5 @@ export const expectedClassNames = [
   "group-hover\\:text-\\[blue-400\\]",
   "transition-\\[all_0\\.3s_ease\\]",
   "animate-\\[spin\\]",
+  "aside",
 ];

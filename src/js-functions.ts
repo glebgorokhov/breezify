@@ -5,8 +5,9 @@ import * as walk from "acorn-walk";
 import { escapeString } from "./helpers.js";
 import { generate } from "astring";
 import chalk from "chalk";
-import { JSOptions } from "./options.js";
+import { CSSOptions, JSOptions } from "./options.js";
 import { minify } from "terser";
+import { isSelectorString, replaceClassNamesInCSS } from "./css-functions.js";
 
 export type SkipRule = (node: AnyNode, ancestors: AnyNode[]) => boolean;
 
@@ -14,6 +15,7 @@ export async function replaceClassNamesInJs(
   content: string,
   classMap: Record<string, string>,
   jsOptions: JSOptions,
+  cssOptions: CSSOptions,
 ): Promise<string> {
   const {
     ignoreStringPatterns = [],
@@ -44,19 +46,18 @@ export async function replaceClassNamesInJs(
     );
     if (isInImportDeclaration) return true;
 
-    skipRules.forEach((rule) => {
-      if (rule(node, ancestors)) return true;
-    });
-
-    return false;
+    return (
+      !!skipRules.length && skipRules.some((rule) => rule(node, ancestors))
+    );
   }
 
   // Function to update class names in string literals
   function updateClassNames(value: string) {
     if (
-      value.trim() !== "" && !ignoreRegExpPatterns.length
+      value.trim() !== "" &&
+      (!ignoreRegExpPatterns.length
         ? true
-        : !ignoreRegExpPatterns.some((pattern) => pattern.test(value))
+        : !ignoreRegExpPatterns.some((pattern) => pattern.test(value)))
     ) {
       // Split the string by spaces, assuming it could contain multiple class names
       const classNames = value.split(/\s+/);
@@ -67,14 +68,25 @@ export async function replaceClassNamesInJs(
         return value;
       }
 
+      const isSelector = isSelectorString(value + " * { display: block; }");
+
+      if (isSelector) {
+        const newVal = replaceClassNamesInCSS(
+          value + " * { display: block; }",
+          classMap,
+          {
+            ...cssOptions,
+            minify: false,
+          },
+        );
+
+        return newVal.replace(/\s?\*\s?{\s?display:\s?block\s?}\s*$/gm, "");
+      }
+
       // Map each class name through classMap for replacements
       return classNames
         .map((className) => {
-          const hasDot = className.startsWith(".");
-          const classNameWithoutDot = hasDot ? className.slice(1) : className;
-          const newClassName =
-            unescapedClassMap[classNameWithoutDot] || classNameWithoutDot;
-          return hasDot ? `.${newClassName}` : newClassName;
+          return unescapedClassMap[className] || className;
         })
         .join(" ");
     }
@@ -87,10 +99,9 @@ export async function replaceClassNamesInJs(
     updates: string[],
     changeStartEnd: [number, number],
   ) {
-    const ancestor =
-      ancestors.length > 2
-        ? ancestors[ancestors.length - 2]
-        : ancestors[ancestors.length - 1];
+    return;
+
+    const ancestor = ancestors.reverse().slice(0, 3).reverse()[0];
 
     let functionCode = content.slice(ancestor.start, ancestor.end);
     const relativeStartEnd = [
@@ -151,28 +162,52 @@ ${functionCode}
             node.key.value = updatedKey;
             node.key.raw = `'${escapeString(updatedKey)}'`;
           }
-        } else if (node.key.type === "Identifier") {
+        } /* else if (node.key.type === "Identifier") {
           const updatedName = updateClassNames(node.key.name);
           if (updatedName !== node.key.name) {
             // This part is tricky; identifiers don't have a `raw` property, so you'd need to replace them in a way that affects the output code.
             // It might involve more sophisticated AST-to-code transformations or ensuring your updates here can be reflected in the output.
             node.key.name = updatedName;
           }
-        }
+        } */
       },
       TemplateLiteral(node, ancestors) {
         if (shouldSkip(node, ancestors as AnyNode[])) return;
 
-        node.quasis.forEach((quasi) => {
-          const updatedValue = updateClassNames(quasi.value.raw);
-          if (updatedValue !== quasi.value.raw) {
+        let rawContent = content.slice(node.start, node.end);
+
+        node.expressions.forEach((expression, index) => {
+          // replace string part from expression.start to expression.end with string ".stringExpressionToIgnore"
+          rawContent = rawContent.replace(
+            content.slice(expression.start - 2, expression.end + 1),
+            "#stringExpressionToIgnore" + index,
+          );
+        });
+
+        rawContent = rawContent.replace(/^`|`$/g, "");
+
+        const updatedValue = updateClassNames(rawContent);
+
+        // Split updated value by #stringExpressionToIgnore\d+ and update each node.quasis with the new value
+        const updatedValueParts = updatedValue.split(
+          /#stringExpressionToIgnore\d+/,
+        );
+
+        console.log(updatedValueParts);
+
+        node.quasis.forEach((quasi, index) => {
+          const updatedValuePart = updatedValueParts[index];
+
+          console.log(quasi.value.raw, "=>", updatedValuePart);
+
+          if (updatedValuePart !== quasi.value.raw) {
             getFunctionDeclarationFromAncestors(
               ancestors as AnyNode[],
-              [quasi.value.raw, updatedValue],
+              [quasi.value.raw, updatedValuePart],
               [quasi.start, quasi.end],
             );
-            quasi.value.raw = updatedValue;
-            quasi.value.cooked = updatedValue;
+            quasi.value.raw = updatedValuePart;
+            quasi.value.cooked = updatedValuePart;
           }
         });
       },

@@ -69,8 +69,6 @@ export function getFilesInDirectory(filesOptions: FilesOptions) {
     }
   });
 
-  console.log(chalk.yellow(`Files to be processed`), listsByType);
-
   return listsByType;
 }
 

@@ -1,7 +1,12 @@
 import { serialize, parse } from "parse5";
 import { minify } from "html-minifier";
 import pretty from "pretty";
-import { HTMLOptions, JSOptions, minifyHtmlDefaultOptions } from "./options.js";
+import {
+  CSSOptions,
+  HTMLOptions,
+  JSOptions,
+  minifyHtmlDefaultOptions,
+} from "./options.js";
 import { replaceClassNamesInJs } from "./js-functions.js";
 
 type Node = {
@@ -23,6 +28,7 @@ export async function replaceClassNamesInHtml(
   classMap: Record<string, string>,
   htmlOptions: HTMLOptions,
   jsOptions: JSOptions,
+  cssOptions: CSSOptions,
 ): Promise<string> {
   const { attributes = ["class"], beautify, minify: minifyHtml } = htmlOptions;
 
@@ -46,6 +52,7 @@ export async function replaceClassNamesInHtml(
               child.value,
               classMap,
               jsOptions,
+              cssOptions,
             );
           }
         }

@@ -36,11 +36,12 @@ export async function breezify(options: DeepPartial<BreezifyOptions> = {}) {
     ],
     [
       fileLists.html,
-      (content: string) => replaceClassNamesInHtml(content, classMap, html, js),
+      (content: string) =>
+        replaceClassNamesInHtml(content, classMap, html, js, css),
     ],
     [
       fileLists.js,
-      (content: string) => replaceClassNamesInJs(content, classMap, js),
+      (content: string) => replaceClassNamesInJs(content, classMap, js, css),
     ],
   ];
 

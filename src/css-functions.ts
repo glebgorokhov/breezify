@@ -66,9 +66,20 @@ export function extractClassNamesFromFiles(
     });
   });
 
-  console.log(Array.from(classNames));
-
   return classNames;
+}
+
+/**
+ * Check if a string is a valid CSS selector
+ * @param value {string} - String to check
+ */
+export function isSelectorString(value: string) {
+  try {
+    const ast = cssTree.parse(value);
+    return !!cssTree.find(ast, (node) => node.type === "ClassSelector");
+  } catch (e) {
+    return false;
+  }
 }
 
 /**

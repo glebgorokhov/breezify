@@ -1,7 +1,16 @@
 import responsiveWidth from "responsive-width";
 import clsx from "clsx";
 
-const header = document.querySelector(".header");
+const header = document.querySelector(
+  ".header[role='decorated'], aside > .aside",
+);
+
+const mySpecialClass = "primary-color";
+const decorated = "decorated";
+
+const headerTwo = document.querySelector(
+  `.header[role='decorated'] .decorated .aside, ${decorated}, aside > .aside, ${mySpecialClass}`,
+);
 
 header.classList.add("responsive-width animate-[spin]");
 
@@ -16,8 +25,6 @@ document.addEventListener("responsive-width", () => {
   });
 });
 
-const mySpecialClass = "primary-color";
-const decorated = "decorated";
 const classes = {
   decorated: "decorated",
 };

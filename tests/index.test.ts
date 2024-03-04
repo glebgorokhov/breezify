@@ -48,6 +48,7 @@ describe("generate and replace CSS class names", () => {
           classMap,
           defaultOptions.html,
           defaultOptions.js,
+          defaultOptions.css,
         ),
     });
   });
@@ -57,10 +58,16 @@ describe("generate and replace CSS class names", () => {
       path: "tests/data/index.js",
       targetPath: "tests/data/index.min.js",
       updateContent: (content) =>
-        replaceClassNamesInJs(content, classMap, {
-          ...defaultOptions.js,
-          skipRules: [skipEventListeners, skipLocalStorageMethods],
-        }),
+        replaceClassNamesInJs(
+          content,
+          classMap,
+          {
+            ...defaultOptions.js,
+            minify: false,
+            skipRules: [skipEventListeners, skipLocalStorageMethods],
+          },
+          defaultOptions.css,
+        ),
     });
   });
 
@@ -95,6 +102,7 @@ describe("generate and replace CSS class names", () => {
           exampleClassMap,
           defaultOptions.html,
           defaultOptions.js,
+          defaultOptions.css,
         ),
     });
   });
@@ -126,6 +134,7 @@ describe("generate and replace CSS class names", () => {
           exampleClassMap,
           defaultOptions.html,
           defaultOptions.js,
+          defaultOptions.css,
         ),
     });
   });
