@@ -5,13 +5,27 @@
 
 Give some fresh air to your production HTML, JS and CSS! Breezify is a library that replaces class names in your build files with shorter ones.
 
+## Installation
+
+1. `npm i -g breezify`
+2. `breezify init` in your project folder to create a config file
+
+### CLI usage
+
+- Update your build command in package.json like that: `{ "build": "your-build-command && breezify do" }`
+- Use `breezify do -h` for the list of options
+
+### API usage
+
+```js
+const breezify = require('breezify');
+
+breezify(options?: BreezifyOptions);
+```
+
 ## Abstract
 
-When you are developing a website, you often use long class names to make your code more readable. 
-
-Another case is using **Tailwind CSS** or similar libraries, where you have to use lots of classes to style your elements.  
-
-However, when you are ready to deploy your website, you want to minify your code to make it faster. Breezify is a library that replaces class names in your HTML, JS and CSS files with shorter ones. This way, you can keep your code readable during development and minify it for production.
+Long class names are great for development, but they can make your production files unnecessarily large. Replacing class names with shorter ones can reduce the file sizes and improve performance.
 
 Breezify turns this:
 
@@ -36,41 +50,154 @@ into this:
 </div>
 ```
 
-_439 characters of class names reduced to 50 characters! (**90% less**)_
+_439 characters of class names reduced to 50 characters! (**89% less**)_
 
-## Why?
+Breezify uses AST tree parsing and manipulations for JS and CSS to carefully transform the code, so in JS it turns this:
 
-- **Maximum File Size Reduction**: Utilizing ultra-short class names in production minimizes CSS, HTML, and JavaScript file sizes, leading to faster load times.
-- **Optimal Performance**: The reduced file sizes ensure peak performance, especially beneficial for users on limited bandwidth connections.
-- **Superior Caching**: Smaller files get cached more efficiently, speeding up repeat visits and improving user experience without affecting development workflow.
-- **Enhanced Minification Efficiency**: These concise class names enhance the efficiency of minification and compression, reducing file sizes more than traditional optimizations.
-- **Seamless Development Experience**: Since class names are only shortened in production, developers can work with descriptive names during development, ensuring ease of maintenance without additional documentation.
-- **Faster CDN Delivery**: The smaller file sizes improve speed across Content Delivery Networks, enhancing global site accessibility and performance.
-- **Improved Compression Ratios**: Short, repetitive class names lead to better compression, resulting in smaller file sizes during transmission.
-- **Reduced Hosting and Bandwidth Costs**: Smaller files translate to lower data transfer costs, particularly beneficial for high-traffic sites.
-- **Quicker Browser Parsing and Rendering**: The reduced data volume allows browsers to parse and apply styles faster, contributing to a quicker user interface.
-- **Efficient JavaScript Interactions**: With class names being shortened only in production, JavaScript development can use meaningful names, while production benefits from efficiency in DOM manipulation.
-- **Indirect SEO Benefits**: Enhanced loading times and site performance can positively influence search engine rankings due to better user experience metrics.
-- **Automatic Debugging Compatibility**: The build process simplifies debugging since developers work with meaningful class names, with the conversion to shorter names happening automatically for production.
+```js
+const mySpecialClass = "primary-color";
+const decorated = "decorated";
 
-## Features
+const header = document.querySelector(
+  `.header[role='decorated']:not(.decorated) .aside, ${decorated}, aside > .aside, ${mySpecialClass}`,
+);
+```
 
-- **Any framework**: Breezify updates class names in your production HTML, JS and CSS files, no matter the framework you are using.
-- **Any pipeline**: Import to your build pipeline or use from CLI
-- **Customizable**: Define which class names you want to replace, use prefixes, and more.
+into this:
 
-## Installation
+```js
+const mySpecialClass = "a";
+const decorated = "b";
 
-- **npm**: `npm install breezify`
-- **yarn**: `yarn add breezify`
-- **pnpm**: `pnpm add breezify`
+const header = document.querySelector(
+  `.c[role='decorated']:not(.b) .d, ${decorated}, aside > .d, ${mySpecialClass}`,
+);
+```
 
-## Usage
+In CSS, it turns this:
+
+```css
+.focus\:border-\[blue-500\]:focus {
+    border-color: #4299e1;
+}
+
+.group:hover .group-hover\:text-\[blue-400\] {
+    color: #63b3ed;
+}
+```
+
+into this:
+
+```css
+.a:focus {
+  border-color: #4299e1;
+}
+
+.b:hover .c {
+  color: #63b3ed;
+}
+```
+
+It also **works with inline scripts and styles**, and it's customizable to fit your needs.
+
+## Reasons
+
+- Every byte counts – money, performance, and user experience
+- Faster DOM manipulations and CSS selector matching. Proof:
+
+```js
+function testPerformance(func) {
+  let count = 0;
+  const startTime = performance.now();
+  const duration = 1000; // milliseconds
+
+  while (performance.now() - startTime < duration) {
+    func(); // Call the target function
+    count++; // Increment the counter
+  }
+
+  return count;
+}
+
+testPerformance(() => { document.querySelector("highlight") }) // 43,457 operations
+testPerformance(() => { document.querySelector("a") }) // 1,290,237 operations (30x faster)
+```
+
+# Breezify Options API Documentation
+
+## BreezifyOptions
+
+Options for configuring Breezify.
+
+- `config` (string): The path to the Breezify config file.
+- `ignoreConfig` (boolean): Whether to ignore the config file.
+- `files` (FilesOptions): Configuration options for file handling.
+- `css` (CSSOptions): Configuration options for CSS processing.
+- `js` (JSOptions): Configuration options for JavaScript processing.
+- `html` (HTMLOptions): Configuration options for HTML processing.
+
+## FilesOptions
+
+Options related to file handling.
+
+- `buildDir` (string): The directory where the files are located. Default: `"dist"`.
+- `outputDir` (string | undefined): The directory where the files should be outputted.
+- `pattern` (string): The pattern to match files relative to the build folder. Default: `"**/*.{css,js,html}"`. See [glob](https://www.npmjs.com/package/glob) for pattern syntax.
+- `ignore` (string[]): The RegExp patterns to ignore.
+
+## CSSOptions
+
+Options for CSS processing.
+
+- `includeClassPatterns` (string[] | undefined): The RegExp patterns to include. Example: `["^tw-"]` for class names with "tw-" prefix.
+- `ignoreClassPatterns` (string[] | undefined): The RegExp patterns to ignore.
+- `sourceMap` (boolean): Whether to generate source maps. Default: `true`.
+- `shuffle` (boolean | undefined): Whether to shuffle class names. Default: `true`.
+- `prefix` (string | undefined): The prefix to add to the class names.
+- `minify` (boolean | undefined): Whether to minify the output CSS. Default: `true`.
+
+## JSOptions
+
+Options for JavaScript processing.
+
+- `ignoreStringPatterns` (string[] | undefined): The RegExp patterns to ignore when replacing class names in strings in JS files.
+- `skipRules` (SkipRule[] | undefined): Skip rules to ignore certain nodes. See [ESTree](https://github.com/estree/estree), [Acorn](https://github.com/acornjs/acorn), and [example skip rules](https://github.com/glebgorokhov/breezify/blob/main/src/skip-rules/index.ts).
+- `mode` ("acorn" | "simple" | undefined): The mode to use for parsing JS files. Default: `"acorn"`.
+- `minify` (boolean | undefined): Whether to minify the output JS. Default: `true`.
+- `minifyInlineJS` (boolean | undefined): Whether to minify inline JS (inside HTML files). Default: `true`.
+
+## HTMLOptions
+
+Options for HTML processing.
+
+- `attributes` (string[]): The attributes to minify in HTML files. Default: `["class"]`.
+- `beautify` (boolean | PrettyOptions | undefined): Whether to beautify the output HTML.
+- `minify` (boolean | Options | undefined): Whether to minify the output HTML. If `true`, `minifyHtmlDefaultOptions` will be used. See [html-minifier](https://www.npmjs.com/package/html-minifier).
+
+## Default configuration
 
 ```javascript
-import breezify from "breezify";
-
-breezify(options);
+{
+  files: {
+    buildDir: "dist",
+    pattern: "**/*.{css,js,html}",
+    ignore: [],
+  },
+  css: {
+    sourceMap: true,
+    shuffle: true,
+    minify: true,
+  },
+  js: {
+    mode: "acorn",
+    minify: true,
+    minifyInlineJS: true,
+  },
+  html: {
+    attributes: ["class"],
+    minify: true,
+  },
+}
 ```
 
 ## License

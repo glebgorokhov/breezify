@@ -8,8 +8,8 @@ const header = document.querySelector(
 const mySpecialClass = "primary-color";
 const decorated = "decorated";
 
-const headerTwo = document.querySelector(
-  `.header[role='decorated'] .decorated .aside, ${decorated}, aside > .aside, ${mySpecialClass}`,
+const header = document.querySelector(
+  `.header[role='decorated']:not(.decorated) .aside, ${decorated}, aside > .aside, ${mySpecialClass}`,
 );
 
 header.classList.add("responsive-width animate-[spin]");

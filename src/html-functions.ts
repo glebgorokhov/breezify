@@ -8,6 +8,7 @@ import {
   minifyHtmlDefaultOptions,
 } from "./options.js";
 import { replaceClassNamesInJs } from "./js-functions.js";
+import { replaceClassNamesInCSS } from "./css-functions.js";
 
 type Node = {
   tagName?: string;
@@ -55,6 +56,19 @@ export async function replaceClassNamesInHtml(
               cssOptions,
             );
           }
+        }
+      }
+    }
+
+    // Update inline CSS
+    if (node.tagName === "style" && node.childNodes?.length) {
+      for (const child of node.childNodes) {
+        if (child.nodeName === "#text" && child.value) {
+          child.value = replaceClassNamesInCSS(
+            child.value,
+            classMap,
+            cssOptions,
+          );
         }
       }
     }
