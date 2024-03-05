@@ -8,7 +8,7 @@ const header = document.querySelector(
 const mySpecialClass = "primary-color";
 const decorated = "decorated";
 
-const header = document.querySelector(
+const headerTwo = document.querySelector(
   `.header[role='decorated']:not(.decorated) .aside, ${decorated}, aside > .aside, ${mySpecialClass}`,
 );
 
