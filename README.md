@@ -35,7 +35,8 @@ breezify(options?: BreezifyOptions);
 
 ## Ask Question or Discuss
 
-You can join the Telegram group for a quick chat: [Breezify Chat](https://t.me/breezifychat)
+- [Create an issue](https://github.com/glebgorokhov/breezify/issues/new)
+- [Join the Telegram group](https://t.me/breezifychat)
 
 ## Donations
 
