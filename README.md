@@ -9,9 +9,9 @@ Give some fresh air to your production HTML, JS and CSS! Breezify is a library t
 - [Usage](#usage)
   - [CLI usage](#cli-usage)
   - [API usage](#api-usage)
-- [Abstract](#abstract)
 - [Ask Question / Discuss](#ask-question-or-discuss)
-- [Donations](#donations)
+- [Donations](#donations-)
+- [Abstract](#abstract)
 - [Reasons](#reasons)
 - [API Documentation](#breezify-options-api-documentation)
 - [License](#license)
@@ -42,7 +42,7 @@ breezify(options);
 - [Create an issue](https://github.com/glebgorokhov/breezify/issues/new)
 - [Join the Telegram group](https://t.me/breezifychat)
 
-## Donations
+## Donations ❤️
 
 If you like the project and want to support it, you can donate to the author:
 
