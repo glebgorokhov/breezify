@@ -5,20 +5,24 @@
 
 Give some fresh air to your production HTML, JS and CSS! Breezify is a library that replaces class names in your build files with shorter ones.
 
-Navigation: 
-
 - [Installation](#installation)
+- [Usage](#usage)
+  - [CLI usage](#cli-usage)
+  - [API usage](#api-usage)
 - [Abstract](#abstract)
 - [Ask Question / Discuss](#ask-question-or-discuss)
+- [Donations](#donations)
 - [Reasons](#reasons)
-- [Breezify Options API Documentation](#breezify-options-api-documentation)
+- [API Documentation](#breezify-options-api-documentation)
 - [License](#license)
-- [Contributing](./CONTRIBUTING.md)
+- [Contributing](#contributing)
 
 ## Installation
 
 1. `npm i -g breezify`
 2. `breezify init` in your project folder to create a config file
+
+## Usage
 
 ### CLI usage
 
@@ -30,7 +34,7 @@ Navigation:
 ```js
 const breezify = require('breezify');
 
-breezify(options?: BreezifyOptions);
+breezify(options);
 ```
 
 ## Ask Question or Discuss
@@ -165,15 +169,15 @@ Options related to file handling.
 - `buildDir` (string): The directory where the files are located. Default: `"dist"`.
 - `outputDir` (string | undefined): The directory where the files should be outputted.
 - `pattern` (string): The pattern to match files relative to the build folder. Default: `"**/*.{css,js,html}"`. See [glob](https://www.npmjs.com/package/glob) for pattern syntax.
-- `ignore` (string[]): The RegExp patterns to ignore.
+- `ignore` (string[]): The RegExp patterns to ignore. Use as strings, without modifiers. Example: `["^node_modules/"]`.
 
 ## CSSOptions
 
 Options for CSS processing.
 
 - `includeClassPatterns` (string[] | undefined): The RegExp patterns to include. Example: `["^tw-"]` for class names with "tw-" prefix.
-- `ignoreClassPatterns` (string[] | undefined): The RegExp patterns to ignore.
-- `sourceMap` (boolean): Whether to generate source maps. Default: `true`.
+- `ignoreClassPatterns` (string[] | undefined): The RegExp patterns to ignore. Use as strings, without modifiers. Example: `["^ProseMirror"]` for class names with "ProseMirror" prefix.
+- `sourceMap` (boolean): Whether to generate source maps. Default: `false`.
 - `shuffle` (boolean | undefined): Whether to shuffle class names. Default: `true`.
 - `prefix` (string | undefined): The prefix to add to the class names.
 - `minify` (boolean | undefined): Whether to minify the output CSS. Default: `true`.
@@ -182,7 +186,7 @@ Options for CSS processing.
 
 Options for JavaScript processing.
 
-- `ignoreStringPatterns` (string[] | undefined): The RegExp patterns to ignore when replacing class names in strings in JS files.
+- `ignoreStringPatterns` (string[] | undefined): The RegExp patterns to ignore when replacing class names in strings in JS files. Use as strings, without modifiers. Example: `["^%s"]`.
 - `skipRules` (SkipRule[] | undefined): Skip rules to ignore certain nodes. See [ESTree](https://github.com/estree/estree), [Acorn](https://github.com/acornjs/acorn), and [example skip rules](https://github.com/glebgorokhov/breezify/blob/main/src/skip-rules/index.ts).
 - `mode` ("acorn" | "simple" | undefined): The mode to use for parsing JS files. Default: `"acorn"`.
 - `minify` (boolean | undefined): Whether to minify the output JS. Default: `true`.
@@ -192,7 +196,7 @@ Options for JavaScript processing.
 
 Options for HTML processing.
 
-- `attributes` (string[]): The attributes to minify in HTML files. Default: `["class"]`.
+- `attributes` (string[]): The attributes you use for class names in HTML files. You may want to include some data attributes in addition to default. Default: `["class"]`.
 - `beautify` (boolean | PrettyOptions | undefined): Whether to beautify the output HTML.
 - `minify` (boolean | Options | undefined): Whether to minify the output HTML. If `true`, `minifyHtmlDefaultOptions` will be used. See [html-minifier](https://www.npmjs.com/package/html-minifier).
 
@@ -228,9 +232,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Contributing
 
-Please read the [CONTRIBUTING.md](./CONTRIBUTING.md) file for details on our code of conduct, and the process for submitting pull requests to us.
+I appreciate any help with the project!
 
-## Code of Conduct
-
-Our Code of Conduct is adapted from the [Contributor Covenant](https://contributor-covenant.org/), version [1.4](https://www.contributor-covenant.org/version/1/4/code-of-conduct/code_of_conduct.md).
+Please read [CONTRIBUTING.md](./CONTRIBUTING.md) and [CODE_OF_CONDUCT.md](./CODE_OF_CONDUCT.md) for details.
 
