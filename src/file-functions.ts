@@ -4,7 +4,6 @@ import * as path from "path";
 import chalk from "chalk";
 import { globSync } from "glob";
 import { BreezifyOptions, defaultOptions, FilesOptions } from "./options.js";
-import { register } from "ts-node";
 
 export function getRelativePath(filePath: string) {
   return path.relative(process.cwd(), filePath);
@@ -149,8 +148,6 @@ export async function updateFileAndCompareSize({
  * @param configPath {string} - Path to the Breezify config file
  */
 export async function loadConfigFromFile(configPath?: string) {
-  register();
-
   // If no configPath provided then we try to find the config file in the current working directory ("breezify.config.js" or "breezify.config.ts")
   if (!configPath) {
     const jsConfigPath = path.join(process.cwd(), "breezify.config.js");
