@@ -2,5 +2,5 @@ lib
 node_modules
 .idea
 coverage
-tests/data/*.min.*
 .DS_Store
+tests/data
