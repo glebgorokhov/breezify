@@ -226,6 +226,11 @@ Options for HTML processing.
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details. 
 
+## Contributing
 
+Please read the [CONTRIBUTING.md](./CONTRIBUTING.md) file for details on our code of conduct, and the process for submitting pull requests to us.
 
+## Code of Conduct
+
+Our Code of Conduct is adapted from the [Contributor Covenant](https://contributor-covenant.org/), version [1.4](https://www.contributor-covenant.org/version/1/4/code-of-conduct/code_of_conduct.md).
 
