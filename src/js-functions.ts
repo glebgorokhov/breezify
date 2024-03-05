@@ -198,8 +198,6 @@ ${functionCode}
         node.quasis.forEach((quasi, index) => {
           const updatedValuePart = updatedValueParts[index];
 
-          console.log(quasi.value.raw, "=>", updatedValuePart);
-
           if (updatedValuePart !== quasi.value.raw) {
             getFunctionDeclarationFromAncestors(
               ancestors as AnyNode[],
