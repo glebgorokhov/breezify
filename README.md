@@ -3,6 +3,11 @@
 
 # Breezify
 
+![NPM Version](https://img.shields.io/npm/v/breezify?logo=npm)
+![GitHub License](https://img.shields.io/github/license/glebgorokhov/breezify)
+![GitHub Issues](https://img.shields.io/github/issues/glebgorokhov/breezify?logo=github)
+![GitHub Pull Requests](https://img.shields.io/github/issues-pr/glebgorokhov/breezify?logo=github)
+
 Give some fresh air to your production HTML, JS and CSS! Breezify is a library that replaces class names in your build files with shorter ones.
 
 Works with **any framework**.
