@@ -5,6 +5,16 @@
 
 Give some fresh air to your production HTML, JS and CSS! Breezify is a library that replaces class names in your build files with shorter ones.
 
+Navigation: 
+
+- [Installation](#installation)
+- [Abstract](#abstract)
+- [Ask Question / Discuss](#ask-question-or-discuss)
+- [Reasons](#reasons)
+- [Breezify Options API Documentation](#breezify-options-api-documentation)
+- [License](#license)
+- [Contributing](./CONTRIBUTING.md)
+
 ## Installation
 
 1. `npm i -g breezify`
@@ -22,6 +32,17 @@ const breezify = require('breezify');
 
 breezify(options?: BreezifyOptions);
 ```
+
+## Ask Question or Discuss
+
+You can join the Telegram group for a quick chat: [Breezify Chat](https://t.me/breezifychat)
+
+## Donations
+
+If you like the project and want to support it, you can donate to the author:
+
+- [GitHub Sponsors](https://github.com/sponsors/glebgorokhov)
+- [BuyMeACoffee](https://www.buymeacoffee.com/glebgorokhov)
 
 ## Abstract
 
