@@ -193,8 +193,6 @@ ${functionCode}
           /#stringExpressionToIgnore\d+/,
         );
 
-        console.log(updatedValueParts);
-
         node.quasis.forEach((quasi, index) => {
           const updatedValuePart = updatedValueParts[index];
 
