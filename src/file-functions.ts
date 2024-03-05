@@ -140,7 +140,7 @@ export async function updateFileAndCompareSize({
 
   return (
     chalk.yellow("Write: ") +
-    `${Array.from(new Set([path, targetPath])).join("=>")}; ${originalSize}kb => ${updatedSize}kb; ${savedSize.toFixed(2)}kb saved (${chalk[savedSize > 0 ? "green" : "red"](savedPercentage + "%")})`
+    `${Array.from(new Set([path, targetPath])).join("=>")}; ${originalSize}kb => ${updatedSize}kb; ${savedSize.toFixed(2)}kb saved (${chalk[savedSize === 0 ? "gray" : savedSize > 0 ? "green" : "red"](savedPercentage + "%")})`
   );
 }
 
