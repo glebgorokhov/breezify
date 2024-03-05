@@ -5,10 +5,13 @@
 
 Give some fresh air to your production HTML, JS and CSS! Breezify is a library that replaces class names in your build files with shorter ones.
 
+Works with **any framework**.
+
 - [Installation](#installation)
 - [Usage](#usage)
   - [CLI usage](#cli-usage)
   - [API usage](#api-usage)
+- [Debugging](#debugging)
 - [Ask Question / Discuss](#ask-question-or-discuss)
 - [Donations](#donations-)
 - [Abstract](#abstract)
@@ -35,6 +38,69 @@ Give some fresh air to your production HTML, JS and CSS! Breezify is a library t
 const breezify = require('breezify');
 
 breezify(options);
+```
+
+## Debugging
+
+In case of code in most cases there is no much difference between your class name and any other string. So when Breezify replaces your class name with a new one there is a possibility of replacing the wrong value which can cause a bug.
+
+### Best Practice: Use Prefix for Class Names
+
+The best way to run Breezify without any issues is to prefix your class names with a unique prefix, like `tw-` for Tailwind CSS. You can also use `includeClassPatterns` and `ignoreClassPatterns` options to include or ignore class names by patterns.
+
+```js
+{
+  css: {
+    includeClassPatterns: ["^tw-"],
+    ignoreClassPatterns: ["^ProseMirror"],
+  }
+}
+```
+
+### Prefix your Breezify Class Names for Debugging
+
+To make it easier to find and fix bugs, you can add a prefix to the class names in the config file. When you see a bug, you can find this place in the code and replace a conflicting class name with a safe one in your source files. After that you can remove the prefix.
+
+```js
+{
+  css: {
+    prefix: "breezify-",
+  }
+}
+```
+
+### Use Custom Skip Rules for JS
+
+If you have a problem with JS, you can use skip rules to ignore certain nodes when replacing the class names. See [ESTree](https://github.com/estree/estree), [Acorn](https://github.com/acornjs/acorn), and [example skip rules](https://github.com/glebgorokhov/breezify/blob/main/src/skip-rules/index.ts).
+
+Example:
+
+```ts
+/**
+ * Skip local storage methods
+ * @param node {AnyNode} - AST node
+ * @param ancestors {AnyNode[]} - Ancestors of the AST node
+ */
+function skipLocalStorageMethods(
+  node: AnyNode,
+  ancestors: AnyNode[],
+): boolean {
+  return (
+    ancestors[ancestors.length - 2]?.callee?.object?.name === "localStorage"
+  );
+}
+
+const options: BreezifyOptions = {
+  js: {
+    skipRules: [skipLocalStorageMethods],
+  }
+}
+```
+
+This will ignore class names in the `localStorage` methods, for example, in this case:
+
+```ts
+localStorage.setItem("favoriteClassName", "myClassName");
 ```
 
 ## Ask Question or Discuss
