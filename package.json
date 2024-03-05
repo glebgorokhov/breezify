@@ -23,7 +23,7 @@
     "build": "npm run clean && tsc && chmod +x ./lib/cli.js",
     "lint": "eslint . --ext .ts --fix",
     "test": "vitest run",
-    "test-watch": "vitest",
+    "test:watch": "vitest",
     "cli-preview": "npm run build && node ./lib",
     "prepack": "npm run lint && npm run test && npm run build"
   },

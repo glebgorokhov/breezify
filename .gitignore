@@ -7,4 +7,6 @@ tests/data/build-files/**/*
 !tests/data/build-files/.gitkeep
 tests/data/output-files/**/*
 !tests/data/output-files/.gitkeep
+tests/data/configs/**/*
+!tests/data/configs/.gitkeep
 
