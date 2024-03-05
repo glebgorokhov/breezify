@@ -2,8 +2,14 @@ import { test, describe } from "vitest";
 import * as fs from "fs";
 import breezify from "../index";
 
-describe("generate and replace CSS class names", () => {
-  const folders = fs.readdirSync("tests/data/build-files");
+describe("run breezify on test projects", () => {
+  const folders = fs.readdirSync("tests/data/build-files").filter((folder) => {
+    return fs.lstatSync(`tests/data/build-files/${folder}`).isDirectory();
+  });
+
+  if (!folders.length) {
+    console.log("No test folders found in tests/data/build-files");
+  }
 
   folders.forEach((folder) => {
     test(`breezify ${folder}`, async () => {
