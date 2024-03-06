@@ -252,6 +252,7 @@ Options for CSS processing.
 - `shuffle` (boolean | undefined): Whether to shuffle class names. Default: `true`.
 - `prefix` (string | undefined): The prefix to add to the class names.
 - `minify` (boolean | undefined): Whether to minify the output CSS. Default: `true`.
+- `extractClassesFromHtml` (boolean | undefined): Whether to extract class names from <style> tags found in HTML files. Default: `true`.
 
 ## JSOptions
 

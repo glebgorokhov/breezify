@@ -18,7 +18,7 @@ const booleanChoices = ["true", "false"];
 
 const booleanParser = (val: string) => val === "true";
 
-program.version("1.0.0").name("breezify");
+program.version("1.0.2").name("breezify");
 
 program
   .command("do")
@@ -52,6 +52,14 @@ program
   .option("--css.prefix <prefix>", "prefix to add to class names")
   .addOption(
     new Option("--css.minify <minify>", "minify the output CSS")
+      .choices(booleanChoices)
+      .argParser(booleanParser),
+  )
+  .addOption(
+    new Option(
+      "--css.extractClassesFromHtml <extractClassesFromHtml>",
+      "whether to extract class names from style tags found in HTML files",
+    )
       .choices(booleanChoices)
       .argParser(booleanParser),
   )

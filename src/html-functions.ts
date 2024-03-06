@@ -120,3 +120,43 @@ export async function replaceClassNamesInHtml(
 
   return newContent;
 }
+
+/**
+ * Get inline styles from HTML content
+ * @param content {string} - HTML content
+ * @param cssOptions {CSSOptions} - CSS options
+ */
+export async function getStylesFromHtmlStyleTags(
+  content: string,
+  cssOptions: CSSOptions,
+): Promise<string> {
+  // Parse the HTML content into an AST
+  const document = parse(content);
+
+  let styles = "";
+
+  // Recursive function to walk through all nodes in the AST
+  async function traverseNode(node: Node) {
+    // Update inline CSS
+    if (node.tagName === "style" && node.childNodes?.length) {
+      for (const child of node.childNodes) {
+        if (child.nodeName === "#text" && child.value) {
+          styles += replaceClassNamesInCSS(child.value, {}, cssOptions);
+        }
+      }
+    }
+
+    if (node.childNodes) {
+      for (const child of node.childNodes) {
+        await traverseNode(child);
+      }
+    }
+  }
+
+  // Start traversing from the root
+  await traverseNode(document as Node);
+
+  console.log(styles);
+
+  return styles;
+}

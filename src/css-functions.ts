@@ -4,6 +4,7 @@ import CleanCSS from "clean-css";
 import { generateObfuscatedNames } from "./class-name-generator.js";
 import { generateClassMap } from "./class-map.js";
 import { CSSOptions } from "./options.js";
+import { getStylesFromHtmlStyleTags } from "./html-functions.js";
 
 /**
  * Extract class names from CSS content
@@ -51,20 +52,25 @@ export function extractClassNames(content: string, cssOptions: CSSOptions) {
  * @param fileList {string[]} - Array of file paths
  * @param cssOptions {CSSOptions} - CSS options
  */
-export function extractClassNamesFromFiles(
+export async function extractClassNamesFromFiles(
   fileList: string[],
   cssOptions: CSSOptions,
 ) {
   const classNames = new Set<string>();
 
-  fileList.forEach((filePath) => {
-    const content = fs.readFileSync(filePath, "utf8");
+  for (const filePath of fileList) {
+    let content = fs.readFileSync(filePath, "utf8");
+
+    if (filePath.endsWith(".html") && cssOptions.extractClassesFromHtml) {
+      content = await getStylesFromHtmlStyleTags(content, cssOptions);
+    }
+
     const fileClassNames = extractClassNames(content, cssOptions);
 
     fileClassNames.forEach((className) => {
       classNames.add(className);
     });
-  });
+  }
 
   return classNames;
 }
@@ -131,11 +137,11 @@ export function replaceClassNamesInCSS(
  * @param fileList {string[]} - Array of file paths
  * @param cssOptions {CSSOptions} - CSS options
  */
-export function extractClassesAndGenerateMap(
+export async function extractClassesAndGenerateMap(
   fileList: string[],
   cssOptions: CSSOptions,
 ) {
-  const classList = extractClassNamesFromFiles(fileList, cssOptions);
+  const classList = await extractClassNamesFromFiles(fileList, cssOptions);
 
   if (classList.size === 0) {
     throw new Error("No class names found in the CSS files.");

@@ -56,6 +56,7 @@ export type CSSOptions = {
    * @default true
    */
   minify?: boolean;
+  extractClassesFromHtml?: boolean;
 };
 
 /**
@@ -143,6 +144,7 @@ export const defaultOptions: BreezifyOptions = {
     sourceMap: true,
     shuffle: false,
     minify: true,
+    extractClassesFromHtml: true,
   },
   js: {
     mode: "acorn",

@@ -24,7 +24,10 @@ export async function breezify(options: DeepPartial<BreezifyOptions> = {}) {
   const { files, css, js, html } = mergeConfigs(loadedConfig, options);
 
   const fileLists = getFilesInDirectory(files);
-  const classMap = extractClassesAndGenerateMap(fileLists.css, css);
+  const classMap = await extractClassesAndGenerateMap(
+    [...fileLists.css, ...fileLists.html],
+    css,
+  );
 
   const listsAndReplaceFunctions: [
     string[],
