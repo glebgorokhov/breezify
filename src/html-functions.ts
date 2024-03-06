@@ -156,7 +156,5 @@ export async function getStylesFromHtmlStyleTags(
   // Start traversing from the root
   await traverseNode(document as Node);
 
-  console.log(styles);
-
   return styles;
 }
