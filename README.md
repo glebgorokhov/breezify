@@ -16,6 +16,7 @@ Works with **any framework**.
 - [Usage](#usage)
   - [CLI usage](#cli-usage)
   - [API usage](#api-usage)
+- [Examples](#examples)
 - [Ask Question / Discuss](#ask-question-or-discuss)
 - [Donations](#donations-)
 - [Abstract](#abstract)
@@ -44,6 +45,10 @@ const breezify = require('breezify');
 
 breezify(options);
 ```
+
+### Examples
+
+- Work in progress...
 
 ## Ask Question or Discuss
 
