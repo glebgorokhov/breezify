@@ -136,26 +136,7 @@ It also **works with inline scripts and styles**, and it's customizable to fit y
 
 ## Reasons
 
-- Every byte counts – money, performance, and user experience
-- Faster DOM manipulations and CSS selector matching. Proof:
-
-```js
-function testPerformance(func) {
-  let count = 0;
-  const startTime = performance.now();
-  const duration = 1000; // milliseconds
-
-  while (performance.now() - startTime < duration) {
-    func(); // Call the target function
-    count++; // Increment the counter
-  }
-
-  return count;
-}
-
-testPerformance(() => { document.querySelector("highlight") }) // 43,457 operations
-testPerformance(() => { document.querySelector("a") }) // 1,290,237 operations (30x faster)
-```
+Every byte counts – money, load times, performance, and user experience.
 
 ## Debugging
 
@@ -285,6 +266,7 @@ Options for HTML processing.
     sourceMap: true,
     shuffle: true,
     minify: true,
+    extractClassesFromHtml: true,
   },
   js: {
     mode: "acorn",

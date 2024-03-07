@@ -23,6 +23,8 @@ type Node = {
  * @param content {string} - HTML content
  * @param classMap {Record<string, string>} - Map of old class names to new class names
  * @param htmlOptions {HTMLOptions} - HTML options
+ * @param jsOptions {JSOptions} - JS options
+ * @param cssOptions {CSSOptions} - CSS options
  */
 export async function replaceClassNamesInHtml(
   content: string,
