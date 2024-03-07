@@ -10,7 +10,7 @@
 
 Give some fresh air to your production HTML, JS and CSS! Breezify is a library that replaces class names in your build files with shorter ones.
 
-Works with **any framework**.
+Works with most frameworks. _Next.js is not supported yet._
 
 - [Installation](#installation)
 - [Usage](#usage)
@@ -46,7 +46,7 @@ const breezify = require('breezify');
 breezify(options);
 ```
 
-### Examples
+## Examples
 
 - Work in progress...
 
