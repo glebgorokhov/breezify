@@ -109,6 +109,15 @@ export function getFileSizeInKb(filePath: string) {
   return (stats.size / 1024).toFixed(2);
 }
 
+export type FileUpdateResult = {
+  fileExtension: string;
+  originalSize: number;
+  updatedSize: number;
+  savedSize: number;
+  savedPercentage: number;
+  message: string;
+};
+
 /**
  * Update a file's content and compare the size difference
  * @param path {string} - Path to the file
@@ -123,7 +132,7 @@ export async function updateFileAndCompareSize({
   path: string;
   targetPath?: string;
   updateContent: (content: string) => string | Promise<string>;
-}): Promise<string> {
+}): Promise<FileUpdateResult> {
   const content = fs.readFileSync(path, "utf8");
   const originalSize = getFileSizeInKb(path);
 
@@ -137,10 +146,16 @@ export async function updateFileAndCompareSize({
     100
   ).toFixed(2);
 
-  return (
-    chalk.yellow("Write: ") +
-    `${Array.from(new Set([path, targetPath])).join("=>")}; ${originalSize}kb => ${updatedSize}kb; ${savedSize.toFixed(2)}kb saved (${chalk[savedSize === 0 ? "gray" : savedSize > 0 ? "green" : "red"](savedPercentage + "%")})`
-  );
+  return {
+    fileExtension: [...path.split(".")].reverse()[0],
+    originalSize: parseFloat(originalSize),
+    updatedSize: parseFloat(updatedSize),
+    savedSize,
+    savedPercentage: (savedSize / parseFloat(originalSize)) * 100,
+    message:
+      chalk.yellow("Write: ") +
+      `${Array.from(new Set([path, targetPath])).join("=>")}; ${originalSize}kb => ${updatedSize}kb; ${savedSize.toFixed(2)}kb saved (${chalk[savedSize === 0 ? "gray" : savedSize > 0 ? "green" : "red"](savedPercentage + "%")})`,
+  };
 }
 
 /**
