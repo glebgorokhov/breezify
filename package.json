@@ -1,6 +1,6 @@
 {
   "name": "breezify",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "A tool for minifying CSS class names",
   "author": "Gleb Gorokhov <theververy@gmail.com>",
   "license": "MIT",
