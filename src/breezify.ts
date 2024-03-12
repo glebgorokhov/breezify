@@ -6,6 +6,7 @@ import {
 } from "./file-functions.js";
 import {
   extractClassesAndGenerateMap,
+  extractCssContentFromFiles,
   replaceClassNamesInCSS,
 } from "./css-functions.js";
 import { replaceClassNamesInHtml } from "./html-functions.js";
@@ -13,6 +14,11 @@ import { replaceClassNamesInJs } from "./js-functions.js";
 import { BreezifyOptions, defaultOptions, mergeConfigs } from "./options.js";
 import { DeepPartial } from "./helpers.js";
 import chalk from "chalk";
+import {
+  collectPropertyPairs,
+  generateAtomizedCssMap,
+  mapOldClassNamesToNew,
+} from "./css-atomize-functions.js";
 
 /**
  * Minify class names in CSS, JS, and HTML files.
@@ -26,10 +32,25 @@ export async function breezify(options: DeepPartial<BreezifyOptions> = {}) {
   const { files, css, js, html } = mergeConfigs(loadedConfig, options);
 
   const fileLists = getFilesInDirectory(files);
+
   const classMap = await extractClassesAndGenerateMap(
     [...fileLists.css, ...fileLists.html],
     css,
   );
+
+  const cssContent = await extractCssContentFromFiles(
+    [...fileLists.css, ...fileLists.html],
+    defaultOptions.css,
+  );
+
+  const propertyPairs = collectPropertyPairs(cssContent);
+
+  const atomizedMap = generateAtomizedCssMap(propertyPairs, loadedConfig.css);
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const mapClassNamesToAtoms = mapOldClassNamesToNew(cssContent, atomizedMap);
+
+  const usedMap = classMap; // loadedConfig.css.atomize ? atomizedMap :
 
   const listsAndReplaceFunctions: [
     string[],
@@ -37,16 +58,16 @@ export async function breezify(options: DeepPartial<BreezifyOptions> = {}) {
   ][] = [
     [
       fileLists.css,
-      (content: string) => replaceClassNamesInCSS(content, classMap, css),
+      (content: string) => replaceClassNamesInCSS(content, usedMap, css),
     ],
     [
       fileLists.html,
       (content: string) =>
-        replaceClassNamesInHtml(content, classMap, html, js, css),
+        replaceClassNamesInHtml(content, usedMap, html, js, css),
     ],
     [
       fileLists.js,
-      (content: string) => replaceClassNamesInJs(content, classMap, js, css),
+      (content: string) => replaceClassNamesInJs(content, usedMap, js, css),
     ],
   ];
 

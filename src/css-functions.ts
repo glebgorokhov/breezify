@@ -47,6 +47,25 @@ export function extractClassNames(content: string, cssOptions: CSSOptions) {
   return classNames;
 }
 
+export async function extractCssContentFromFiles(
+  fileList: string[],
+  cssOptions: CSSOptions,
+) {
+  let cssContent = "";
+
+  for (const filePath of fileList) {
+    let content = fs.readFileSync(filePath, "utf8");
+
+    if (filePath.endsWith(".html") && cssOptions.extractClassesFromHtml) {
+      content = await getStylesFromHtmlStyleTags(content, cssOptions);
+    }
+
+    cssContent += content;
+  }
+
+  return cssContent;
+}
+
 /**
  * Extract class names from a list of CSS files
  * @param fileList {string[]} - Array of file paths
@@ -57,20 +76,12 @@ export async function extractClassNamesFromFiles(
   cssOptions: CSSOptions,
 ) {
   const classNames = new Set<string>();
+  const content = await extractCssContentFromFiles(fileList, cssOptions);
+  const fileClassNames = extractClassNames(content, cssOptions);
 
-  for (const filePath of fileList) {
-    let content = fs.readFileSync(filePath, "utf8");
-
-    if (filePath.endsWith(".html") && cssOptions.extractClassesFromHtml) {
-      content = await getStylesFromHtmlStyleTags(content, cssOptions);
-    }
-
-    const fileClassNames = extractClassNames(content, cssOptions);
-
-    fileClassNames.forEach((className) => {
-      classNames.add(className);
-    });
-  }
+  fileClassNames.forEach((className) => {
+    classNames.add(className);
+  });
 
   return classNames;
 }

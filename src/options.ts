@@ -56,7 +56,16 @@ export type CSSOptions = {
    * @default true
    */
   minify?: boolean;
+  /**
+   * Whether to extract class names from HTML files
+   * @default true
+   */
   extractClassesFromHtml?: boolean;
+  /**
+   * Whether to atomize the class names
+   * @default true
+   */
+  atomize?: boolean;
 };
 
 /**
@@ -145,6 +154,7 @@ export const defaultOptions: BreezifyOptions = {
     shuffle: false,
     minify: true,
     extractClassesFromHtml: true,
+    atomize: true,
   },
   js: {
     mode: "acorn",
@@ -199,7 +209,6 @@ export function mergeConfigs(
 
 /**
  * Generate the content for the config file
- * @param useTypescript {boolean} - Whether to use TypeScript
  * @returns The content for the config file
  */
 export function generateConfigFileContent() {
