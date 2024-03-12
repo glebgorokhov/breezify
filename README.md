@@ -55,7 +55,7 @@ breezify(options);
 - [Create an issue](https://github.com/glebgorokhov/breezify/issues/new)
 - [Join the Telegram group](https://t.me/breezifychat)
 
-## Donations ❤️
+## Donations 👉👈
 
 If you like the project and want to support it, you can donate to the author:
 
