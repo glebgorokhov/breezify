@@ -234,11 +234,12 @@ Options for CSS processing.
 
 - `includeClassPatterns` (string[] | undefined): The RegExp patterns to include. Example: `["^tw-"]` for class names with "tw-" prefix.
 - `ignoreClassPatterns` (string[] | undefined): The RegExp patterns to ignore. Use as strings, without modifiers. Example: `["^ProseMirror"]` for class names with "ProseMirror" prefix.
-- `sourceMap` (boolean): Whether to generate source maps. Default: `false`.
 - `shuffle` (boolean | undefined): Whether to shuffle class names. Default: `true`.
 - `prefix` (string | undefined): The prefix to add to the class names.
 - `minify` (boolean | undefined): Whether to minify the output CSS. Default: `true`.
 - `extractClassesFromHtml` (boolean | undefined): Whether to extract class names from <style> tags found in HTML files. Default: `true`.
+- `restructure` (boolean | undefined): Whether to restructure the output CSS with CSSO for more efficient minification. Default: `true`.
+- `forceMediaMerge` (boolean | undefined): Whether to force merging media queries with CSSO for more efficient minification. Default: `true`.
 
 ## JSOptions
 
