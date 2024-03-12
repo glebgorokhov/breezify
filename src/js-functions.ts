@@ -1,6 +1,5 @@
 // Replace class names in JS content with care
-import * as acorn from "acorn";
-import { AnyNode } from "acorn";
+import { AnyNode, Parser } from "acorn";
 import * as walk from "acorn-walk";
 import { escapeString } from "./helpers.js";
 import { generate } from "astring";
@@ -8,6 +7,18 @@ import chalk from "chalk";
 import { CSSOptions, JSOptions } from "./options.js";
 import { minify } from "terser";
 import { isSelectorString, replaceClassNamesInCSS } from "./css-functions.js";
+
+// @ts-expect-error I know what I'm doing
+class SyntacticParser extends Parser {
+  raiseRecoverable(pos: any, message: string) {
+    if (
+      message.includes("Identifier ") &&
+      message.includes(" has already been declared")
+    )
+      return;
+    (Parser.prototype as any).raiseRecoverable.call(this, pos, message); // weird call syntax required because the TypeScript types for Parser doesn't contain the `raiseRecoverable` method
+  }
+}
 
 export type SkipRule = (node: AnyNode, ancestors: AnyNode[]) => boolean;
 
@@ -125,7 +136,7 @@ ${functionCode}
   }
 
   if (mode === "acorn") {
-    const ast = acorn.parse(content, {
+    const ast = SyntacticParser.parse(content, {
       ecmaVersion: 2020,
       sourceType: "module",
     }); // Parse JS content into AST
