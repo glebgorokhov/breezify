@@ -40,18 +40,29 @@ program
     "RegExp patterns to ignore",
   )
   .addOption(
-    new Option("--css.sourceMap <sourceMap>", "generate source maps")
-      .choices(booleanChoices)
-      .argParser(booleanParser),
-  )
-  .addOption(
     new Option("--css.shuffle <shuffle>", "shuffle class names")
       .choices(booleanChoices)
       .argParser(booleanParser),
   )
   .option("--css.prefix <prefix>", "prefix to add to class names")
   .addOption(
-    new Option("--css.minify <minify>", "minify the output CSS")
+    new Option("--css.minify <minify>", "minify the output CSS with CSSO")
+      .choices(booleanChoices)
+      .argParser(booleanParser),
+  )
+  .addOption(
+    new Option(
+      "--css.restructure <restructure>",
+      "restructure the output CSS with CSSO",
+    )
+      .choices(booleanChoices)
+      .argParser(booleanParser),
+  )
+  .addOption(
+    new Option(
+      "--css.forceMediaMerge <forceMediaMerge>",
+      "force media merge with CSSO",
+    )
       .choices(booleanChoices)
       .argParser(booleanParser),
   )

@@ -40,11 +40,6 @@ export type CSSOptions = {
   /** The RegExp patterns to ignore */
   ignoreClassPatterns?: string[];
   /**
-   * Whether to generate source maps
-   * @default true
-   */
-  sourceMap: boolean;
-  /**
    * Whether to shuffle class names
    * @default true
    */
@@ -56,6 +51,20 @@ export type CSSOptions = {
    * @default true
    */
   minify?: boolean;
+  /**
+   * Whether to restructure the CSS with CSSO for maximum compression
+   * @default true
+   */
+  restructure?: boolean;
+  /**
+   * Whether to force media merge with CSSO
+   * @default true
+   */
+  forceMediaMerge?: boolean;
+  /**
+   * Whether to extract class names from style tags found in HTML files
+   * @default true
+   */
   extractClassesFromHtml?: boolean;
 };
 
@@ -141,10 +150,11 @@ export const defaultOptions: BreezifyOptions = {
     ignore: [],
   },
   css: {
-    sourceMap: true,
     shuffle: false,
     minify: true,
     extractClassesFromHtml: true,
+    restructure: true,
+    forceMediaMerge: true,
   },
   js: {
     mode: "acorn",

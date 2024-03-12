@@ -1,10 +1,10 @@
 import * as cssTree from "css-tree";
 import fs from "fs";
-import CleanCSS from "clean-css";
 import { generateObfuscatedNames } from "./class-name-generator.js";
 import { generateClassMap } from "./class-map.js";
 import { CSSOptions } from "./options.js";
 import { getStylesFromHtmlStyleTags } from "./html-functions.js";
+import { minify } from "csso";
 
 /**
  * Extract class names from CSS content
@@ -99,8 +99,6 @@ export function replaceClassNamesInCSS(
   classMap: Record<string, string>,
   cssOptions: CSSOptions,
 ): string {
-  const { sourceMap, minify } = cssOptions;
-
   // Parse the CSS content into an AST
   const ast = cssTree.parse(content);
 
@@ -121,12 +119,12 @@ export function replaceClassNamesInCSS(
   });
 
   // Minify the CSS content
-  if (minify) {
-    const minifyResult = new CleanCSS({
-      sourceMap,
-    }).minify(newContent);
-
-    newContent = minifyResult.styles;
+  if (cssOptions.minify) {
+    newContent = minify(newContent, {
+      restructure: cssOptions.restructure,
+      forceMediaMerge: cssOptions.forceMediaMerge,
+      comments: false,
+    }).css;
   }
 
   return newContent;
