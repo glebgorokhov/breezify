@@ -4,6 +4,7 @@
 # Breezify
 
 ![NPM Version](https://img.shields.io/npm/v/breezify?logo=npm)
+![NPM Downloads](https://img.shields.io/npm/dw/breezify?logo=npm)
 ![GitHub License](https://img.shields.io/github/license/glebgorokhov/breezify)
 ![GitHub Issues](https://img.shields.io/github/issues/glebgorokhov/breezify?logo=github)
 ![GitHub Pull Requests](https://img.shields.io/github/issues-pr/glebgorokhov/breezify?logo=github)
@@ -262,7 +263,7 @@ Options for HTML processing.
 ## Default configuration
 
 ```javascript
-{
+const options = {
   files: {
     buildDir: "dist",
     pattern: "**/*.{css,js,html}",
