@@ -60,14 +60,15 @@
     "terser": "^5.28.1"
   },
   "devDependencies": {
-    "@types/csso": "^5.0.4",
     "@types/css-tree": "^2.3.6",
+    "@types/csso": "^5.0.4",
     "@types/html-minifier": "^4.0.5",
     "@types/inquirer": "^9.0.7",
     "@types/lodash.merge": "^4.6.9",
     "@types/lodash.set": "^4.3.9",
     "@types/node": "^20.11.19",
     "@types/pretty": "^2.0.3",
+    "@types/webpack": "^5.28.5",
     "@typescript-eslint/eslint-plugin": "^7.0.1",
     "@typescript-eslint/parser": "^7.0.1",
     "eslint": "^8.56.0",

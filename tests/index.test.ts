@@ -1,6 +1,6 @@
 import { test, describe } from "vitest";
 import * as fs from "fs";
-import breezify from "../index";
+import breezify from "../index.js";
 
 describe("run breezify on test projects", () => {
   const folders = fs.readdirSync("tests/data/build-files").filter((folder) => {
