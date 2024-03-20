@@ -26,6 +26,17 @@ Works with most frameworks. _Next.js is not supported yet._
 - [License](#license)
 - [Contributing](#contributing)
 
+## Sponsored by
+
+<a href="https://github.com/foxie-solutions">
+  <img src="https://avatars.githubusercontent.com/u/128540116?s=200&v=4" width="60" alt="Foxie Solutions" style="border-radius: 10px;" />
+</a>
+
+If you like the project and want to support it, you can donate to the author:
+
+- [GitHub Sponsors](https://github.com/sponsors/glebgorokhov)
+- [BuyMeACoffee](https://www.buymeacoffee.com/glebgorokhov)
+
 ## Installation
 
 1. `npm i -g breezify`
@@ -54,13 +65,6 @@ breezify(options);
 
 - [Create an issue](https://github.com/glebgorokhov/breezify/issues/new)
 - [Join the Telegram group](https://t.me/breezifychat)
-
-## Donations 👉👈
-
-If you like the project and want to support it, you can donate to the author:
-
-- [GitHub Sponsors](https://github.com/sponsors/glebgorokhov)
-- [BuyMeACoffee](https://www.buymeacoffee.com/glebgorokhov)
 
 ## Abstract
 

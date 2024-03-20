@@ -9,4 +9,6 @@ tests/data/output-files/**/*
 !tests/data/output-files/.gitkeep
 tests/data/configs/**/*
 !tests/data/configs/.gitkeep
+tests/data/test-repos/**/*
+!tests/data/test-repos/.gitkeep
 
