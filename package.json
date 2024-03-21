@@ -9,8 +9,15 @@
   },
   "homepage": "https://github.com/glebgorokhov/breezify#readme",
   "private": false,
-  "main": "lib/index.js",
-  "types": "lib/index.d.ts",
+  "main": "lib/cjs/index.js",
+  "module": "lib/mjs/index.js",
+  "exports": {
+    ".": {
+      "import": "./lib/mjs/index.js",
+      "require": "./lib/cjs/index.js"
+    }
+  },
+  "types": "lib/mjs/index.d.ts",
   "bin": {
     "breezify": "./lib/cli.js"
   },
@@ -20,7 +27,7 @@
   ],
   "scripts": {
     "clean": "rm -rf ./lib",
-    "build": "npm run clean && tsc && chmod +x ./lib/cli.js",
+    "build": "npm run clean && tsc -p tsconfig.json && tsc -p tsconfig-cjs.json && node create-package-jsons.js && chmod +x ./lib/cjs/cli.js && chmod +x ./lib/mjs/cli.js",
     "lint": "eslint . --ext .ts --fix",
     "test": "vitest run",
     "test:watch": "vitest",
@@ -46,7 +53,7 @@
     "acorn": "^8.11.3",
     "acorn-walk": "^8.3.2",
     "astring": "^1.8.6",
-    "chalk": "^5.3.0",
+    "chalk": "^4.1.2",
     "commander": "^12.0.0",
     "css-tree": "^2.3.1",
     "csso": "^5.0.5",
