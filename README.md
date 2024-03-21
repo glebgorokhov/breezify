@@ -8,6 +8,7 @@
 ![GitHub License](https://img.shields.io/github/license/glebgorokhov/breezify)
 ![GitHub Issues](https://img.shields.io/github/issues/glebgorokhov/breezify?logo=github)
 ![GitHub Pull Requests](https://img.shields.io/github/issues-pr/glebgorokhov/breezify?logo=github)
+![GitHub Sponsors](https://img.shields.io/github/sponsors/glebgorokhov)
 
 Give some fresh air to your production HTML, JS and CSS! Breezify is a library that replaces class names in your build files with shorter ones.
 
@@ -26,6 +27,15 @@ Works with most frameworks. _Next.js is not supported yet._
 - [API Documentation](#breezify-options-api-documentation)
 - [License](#license)
 - [Contributing](#contributing)
+
+## Sponsored by
+
+[![Foxie Solutions](https://avatars.githubusercontent.com/u/128540116?s=60&v=4)](https://github.com/foxie-solutions)
+
+If you like the project and want to support it, you can donate to the author:
+
+- [GitHub Sponsors](https://github.com/sponsors/glebgorokhov)
+- [BuyMeACoffee](https://www.buymeacoffee.com/glebgorokhov)
 
 ## Installation
 
@@ -55,13 +65,6 @@ breezify(options);
 
 - [Create an issue](https://github.com/glebgorokhov/breezify/issues/new)
 - [Join the Telegram group](https://t.me/breezifychat)
-
-## Donations 👉👈
-
-If you like the project and want to support it, you can donate to the author:
-
-- [GitHub Sponsors](https://github.com/sponsors/glebgorokhov)
-- [BuyMeACoffee](https://www.buymeacoffee.com/glebgorokhov)
 
 ## Abstract
 
