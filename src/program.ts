@@ -18,7 +18,7 @@ const booleanChoices = ["true", "false"];
 
 const booleanParser = (val: string) => val === "true";
 
-program.version("1.0.6").name("breezify");
+program.version("1.1.0").name("breezify");
 
 program
   .command("do")
