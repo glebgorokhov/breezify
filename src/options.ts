@@ -150,11 +150,8 @@ export const defaultOptions: BreezifyOptions = {
     ignore: [],
   },
   css: {
-    shuffle: false,
     minify: true,
     extractClassesFromHtml: true,
-    restructure: false,
-    forceMediaMerge: false,
   },
   js: {
     mode: "acorn",

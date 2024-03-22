@@ -4,16 +4,17 @@ import {
   CSSOptions,
   defaultOptions,
   mergeConfigs,
-} from "../options.js";
-import { extractClassNames, replaceClassNamesInCSS } from "../css-functions.js";
-import { generateObfuscatedNames } from "../class-name-generator.js";
-import { generateClassMap } from "../class-map.js";
+} from "../../options";
+import { extractClassNames, replaceClassNamesInCSS } from "../../css-functions";
+import { generateObfuscatedNames } from "../../class-name-generator";
+import { generateClassMap } from "../../class-map";
 import {
   getStylesFromHtmlStyleTags,
   replaceClassNamesInHtml,
-} from "../html-functions.js";
-import { replaceClassNamesInJs } from "../js-functions.js";
-import { loadConfigFromFile } from "../file-functions.js";
+} from "../../html-functions";
+import { replaceClassNamesInJs } from "../../js-functions";
+import { loadConfigFromFile } from "../../file-functions";
+import { DeepPartial } from "../../helpers";
 
 function getFileListsFromCompilationAssets(assets: Record<string, any>) {
   return Object.keys(assets)
@@ -56,21 +57,21 @@ async function extractClassNamesFromAssets(
 }
 
 export default class BreezifyWebpackPlugin {
-  constructor(private options?: BreezifyOptions) {
-    this.options = (options || defaultOptions) as BreezifyOptions;
+  private options: BreezifyOptions;
+
+  constructor(options: DeepPartial<BreezifyOptions> = {}) {
+    this.options = mergeConfigs(defaultOptions, options);
   }
+
   apply(compiler: Compiler) {
     compiler.hooks.compilation.tap(
       "BreezifyWebpackPlugin",
       async (compilation) => {
         const loadedConfig = !this.options?.ignoreConfig
           ? await loadConfigFromFile(this.options?.config)
-          : defaultOptions;
+          : this.options;
 
-        const { css, js, html } = mergeConfigs(
-          loadedConfig,
-          this.options || {},
-        );
+        const { css, js, html } = loadedConfig;
 
         compilation.hooks.processAssets.tapAsync(
           {

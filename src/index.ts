@@ -1,6 +1,6 @@
 import { breezify } from "./breezify";
 import { BreezifyOptions } from "./options";
-import BreezifyWebpackPlugin from "./plugins/webpack";
+import BreezifyWebpack5Plugin from "./plugins/webpack5";
 
 export default breezify;
-export { BreezifyOptions, BreezifyWebpackPlugin };
+export { BreezifyOptions, BreezifyWebpack5Plugin };
