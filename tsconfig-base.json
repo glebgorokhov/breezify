@@ -10,6 +10,8 @@
     "skipLibCheck": true,
     "allowSyntheticDefaultImports": true,
   },
-  "include": ["index.ts", "cli.ts", "src/skip-rules/**/*.ts"],
+  "include": [
+    "src/index.ts",
+    "src/cli.ts", "src/skip-rules/**/*.ts"],
   "exclude": ["node_modules", "lib", "tests", "coverage"]
 }

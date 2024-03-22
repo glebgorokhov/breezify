@@ -19,7 +19,7 @@
   },
   "types": "lib/mjs/index.d.ts",
   "bin": {
-    "breezify": "./lib/cli.js"
+    "breezify": "./lib/mjs/cli.js"
   },
   "type": "module",
   "files": [

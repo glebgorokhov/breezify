@@ -53,12 +53,12 @@ export type CSSOptions = {
   minify?: boolean;
   /**
    * Whether to restructure the CSS with CSSO for maximum compression
-   * @default true
+   * @default false
    */
   restructure?: boolean;
   /**
    * Whether to force media merge with CSSO
-   * @default true
+   * @default false
    */
   forceMediaMerge?: boolean;
   /**
@@ -153,8 +153,8 @@ export const defaultOptions: BreezifyOptions = {
     shuffle: false,
     minify: true,
     extractClassesFromHtml: true,
-    restructure: true,
-    forceMediaMerge: true,
+    restructure: false,
+    forceMediaMerge: false,
   },
   js: {
     mode: "acorn",
