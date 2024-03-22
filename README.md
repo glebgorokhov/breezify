@@ -4,6 +4,7 @@
 # Breezify
 
 ![NPM Version](https://img.shields.io/npm/v/breezify?logo=npm)
+![NPM Downloads](https://img.shields.io/npm/dw/breezify?logo=npm)
 ![GitHub License](https://img.shields.io/github/license/glebgorokhov/breezify)
 ![GitHub Issues](https://img.shields.io/github/issues/glebgorokhov/breezify?logo=github)
 ![GitHub Pull Requests](https://img.shields.io/github/issues-pr/glebgorokhov/breezify?logo=github)
@@ -11,7 +12,7 @@
 
 Give some fresh air to your production HTML, JS and CSS! Breezify is a library that replaces class names in your build files with shorter ones.
 
-Works with most frameworks. _Next.js is not supported yet._
+Works with most frameworks. Next.js is now supported!
 
 - [Installation](#installation)
 - [Usage](#usage)
@@ -50,10 +51,45 @@ If you like the project and want to support it, you can donate to the author:
 
 ### API usage
 
+CommonJS:
+
 ```js
 const breezify = require('breezify');
 
 breezify(options);
+```
+
+ESM:
+
+```js
+import breezify from 'breezify';
+
+breezify(options);
+```
+
+### Webpack 5 Plugin (Next.js)
+
+Initialize the plugin in your `next.config.js`:
+
+```js
+const { BreezifyWebpack5Plugin } = require("breezify");
+
+module.exports = {
+  webpack: (config) => {
+    config.plugins.push(new BreezifyWebpack5Plugin());
+    return config;
+  },
+}
+```
+
+You can pass options to the plugin:
+
+```js
+new BreezifyWebpack5Plugin({
+  css: {
+    prefix: "tw-",
+  },
+});
 ```
 
 ## Examples
@@ -241,8 +277,8 @@ Options for CSS processing.
 - `prefix` (string | undefined): The prefix to add to the class names.
 - `minify` (boolean | undefined): Whether to minify the output CSS. Default: `true`.
 - `extractClassesFromHtml` (boolean | undefined): Whether to extract class names from <style> tags found in HTML files. Default: `true`.
-- `restructure` (boolean | undefined): Whether to restructure the output CSS with CSSO for more efficient minification. Default: `true`.
-- `forceMediaMerge` (boolean | undefined): Whether to force merging media queries with CSSO for more efficient minification. Default: `true`.
+- `restructure` (boolean | undefined): Whether to restructure the output CSS with CSSO for more efficient minification. **Can break your styles!** Default: `false`.
+- `forceMediaMerge` (boolean | undefined): Whether to force merging media queries with CSSO for more efficient minification. **Can break your styles!** Default: `false`.
 
 ## JSOptions
 
@@ -264,23 +300,20 @@ Options for HTML processing.
 
 ## Default configuration
 
-```javascript
-{
+```ts
+const options: BreezifyOptions = {
   files: {
     buildDir: "dist",
     pattern: "**/*.{css,js,html}",
     ignore: [],
   },
   css: {
-    sourceMap: true,
-    shuffle: true,
     minify: true,
     extractClassesFromHtml: true,
   },
   js: {
     mode: "acorn",
     minify: true,
-    minifyInlineJS: true,
   },
   html: {
     attributes: ["class"],

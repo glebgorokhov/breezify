@@ -3,6 +3,7 @@ node_modules
 .idea
 coverage
 .DS_Store
+**/.DS_Store
 tests/data/build-files/**/*
 !tests/data/build-files/.gitkeep
 tests/data/output-files/**/*

@@ -49,13 +49,15 @@ export function extractClassNames(content: string, cssOptions: CSSOptions) {
 
 /**
  * Extract class names from a list of CSS files
- * @param fileList {string[]} - Array of file paths
- * @param cssOptions {CSSOptions} - CSS options
+ * @param options {object} - Options
+ * @param options.fileList {string[]} - Array of file paths
+ * @param options.cssOptions {CSSOptions} - CSS options
  */
-export async function extractClassNamesFromFiles(
-  fileList: string[],
-  cssOptions: CSSOptions,
-) {
+export async function extractClassNamesFromFiles(options: {
+  fileList: string[];
+  cssOptions: CSSOptions;
+}) {
+  const { fileList, cssOptions } = options;
   const classNames = new Set<string>();
 
   for (const filePath of fileList) {
@@ -132,14 +134,19 @@ export function replaceClassNamesInCSS(
 
 /**
  * Extract class names from CSS files and generate a map of old class names to new class names
- * @param fileList {string[]} - Array of file paths
- * @param cssOptions {CSSOptions} - CSS options
+ * @param options {object}
+ * @param options.fileList {string[]} - Array of file paths
+ * @param options.cssOptions {CSSOptions} - CSS options
  */
-export async function extractClassesAndGenerateMap(
-  fileList: string[],
-  cssOptions: CSSOptions,
-) {
-  const classList = await extractClassNamesFromFiles(fileList, cssOptions);
+export async function extractClassesAndGenerateMap(options: {
+  fileList: string[];
+  cssOptions: CSSOptions;
+}) {
+  const { fileList, cssOptions } = options;
+  const classList = await extractClassNamesFromFiles({
+    fileList,
+    cssOptions,
+  });
 
   if (classList.size === 0) {
     throw new Error("No class names found in the CSS files.");
