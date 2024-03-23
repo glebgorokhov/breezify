@@ -1,8 +1,9 @@
-import { SkipRule } from "./js-functions.js";
+import fs from "fs";
 import { Options } from "html-minifier";
 import merge from "lodash.merge";
+
 import { DeepPartial } from "./helpers.js";
-import fs from "fs";
+import { SkipRule } from "./js-functions.js";
 
 /**
  * Options for pretty

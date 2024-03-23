@@ -1,14 +1,15 @@
-import { serialize, parse } from "parse5";
 import { minify } from "html-minifier";
+import { parse, serialize } from "parse5";
 import pretty from "pretty";
+
+import { replaceClassNamesInCSS } from "./css-functions.js";
+import { replaceClassNamesInJs } from "./js-functions.js";
 import {
   CSSOptions,
   HTMLOptions,
   JSOptions,
   minifyHtmlDefaultOptions,
 } from "./options.js";
-import { replaceClassNamesInJs } from "./js-functions.js";
-import { replaceClassNamesInCSS } from "./css-functions.js";
 
 type Node = {
   tagName?: string;

@@ -1,12 +1,13 @@
 // Replace class names in JS content with care
 import { AnyNode, Parser } from "acorn";
 import * as walk from "acorn-walk";
-import { escapeString } from "./helpers.js";
 import { generate } from "astring";
 import chalk from "chalk";
-import { CSSOptions, JSOptions } from "./options.js";
 import { minify } from "terser";
+
 import { isSelectorString, replaceClassNamesInCSS } from "./css-functions.js";
+import { escapeString } from "./helpers.js";
+import { CSSOptions, JSOptions } from "./options.js";
 
 // @ts-expect-error I know what I'm doing
 class SyntacticParser extends Parser {

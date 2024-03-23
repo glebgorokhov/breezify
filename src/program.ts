@@ -1,16 +1,17 @@
+import chalk from "chalk";
 import { Command, Option } from "commander";
+import fs from "fs";
 import inquirer from "inquirer";
+import set from "lodash.set";
+import path from "path";
+
 import { breezify } from "./breezify.js";
+import { DeepPartial } from "./helpers.js";
 import {
   BreezifyOptions,
   generateConfigFileContent,
   JSOptions,
 } from "./options.js";
-import set from "lodash.set";
-import fs from "fs";
-import path from "path";
-import chalk from "chalk";
-import { DeepPartial } from "./helpers.js";
 
 const program = new Command();
 
@@ -18,7 +19,7 @@ const booleanChoices = ["true", "false"];
 
 const booleanParser = (val: string) => val === "true";
 
-program.version("1.1.1").name("breezify");
+program.version("1.1.2").name("breezify");
 
 program
   .command("do")

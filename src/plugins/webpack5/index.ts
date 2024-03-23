@@ -1,20 +1,24 @@
 import { type Compiler } from "webpack";
+
+import { generateClassMap } from "../../class-map.js";
+import { generateObfuscatedNames } from "../../class-name-generator.js";
+import {
+  extractClassNames,
+  replaceClassNamesInCSS,
+} from "../../css-functions.js";
+import { loadConfigFromFile } from "../../file-functions.js";
+import { DeepPartial } from "../../helpers.js";
+import {
+  getStylesFromHtmlStyleTags,
+  replaceClassNamesInHtml,
+} from "../../html-functions.js";
+import { replaceClassNamesInJs } from "../../js-functions.js";
 import {
   BreezifyOptions,
   CSSOptions,
   defaultOptions,
   mergeConfigs,
-} from "../../options";
-import { extractClassNames, replaceClassNamesInCSS } from "../../css-functions";
-import { generateObfuscatedNames } from "../../class-name-generator";
-import { generateClassMap } from "../../class-map";
-import {
-  getStylesFromHtmlStyleTags,
-  replaceClassNamesInHtml,
-} from "../../html-functions";
-import { replaceClassNamesInJs } from "../../js-functions";
-import { loadConfigFromFile } from "../../file-functions";
-import { DeepPartial } from "../../helpers";
+} from "../../options.js";
 
 function getFileListsFromCompilationAssets(assets: Record<string, any>) {
   return Object.keys(assets)

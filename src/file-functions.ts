@@ -1,8 +1,9 @@
 // Get a list of all files in the directory and subdirectories
-import * as fs from "fs";
-import * as path from "path";
 import chalk from "chalk";
+import * as fs from "fs";
 import { globSync } from "glob";
+import * as path from "path";
+
 import { BreezifyOptions, defaultOptions, FilesOptions } from "./options.js";
 
 export function getRelativePath(filePath: string) {

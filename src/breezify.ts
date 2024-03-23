@@ -1,18 +1,19 @@
+import chalk from "chalk";
+
+import {
+  extractClassesAndGenerateMap,
+  replaceClassNamesInCSS,
+} from "./css-functions.js";
 import {
   FileUpdateResult,
   getFilesInDirectory,
   loadConfigFromFile,
   updateFileAndCompareSize,
 } from "./file-functions.js";
-import {
-  extractClassesAndGenerateMap,
-  replaceClassNamesInCSS,
-} from "./css-functions.js";
+import { DeepPartial } from "./helpers.js";
 import { replaceClassNamesInHtml } from "./html-functions.js";
 import { replaceClassNamesInJs } from "./js-functions.js";
 import { BreezifyOptions, defaultOptions, mergeConfigs } from "./options.js";
-import { DeepPartial } from "./helpers.js";
-import chalk from "chalk";
 
 /**
  * Minify class names in CSS, JS, and HTML files.

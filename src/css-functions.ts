@@ -1,10 +1,11 @@
 import * as cssTree from "css-tree";
-import fs from "fs";
-import { generateObfuscatedNames } from "./class-name-generator.js";
-import { generateClassMap } from "./class-map.js";
-import { CSSOptions } from "./options.js";
-import { getStylesFromHtmlStyleTags } from "./html-functions.js";
 import { minify } from "csso";
+import fs from "fs";
+
+import { generateClassMap } from "./class-map.js";
+import { generateObfuscatedNames } from "./class-name-generator.js";
+import { getStylesFromHtmlStyleTags } from "./html-functions.js";
+import { CSSOptions } from "./options.js";
 
 /**
  * Extract class names from CSS content
