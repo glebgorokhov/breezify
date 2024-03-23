@@ -3,6 +3,8 @@
 
 # Breezify
 
+![Twitter post - 1](https://github.com/glebgorokhov/breezify/assets/24701608/92890261-f9d1-433f-9827-ba9379b28c76)
+
 ![NPM Version](https://img.shields.io/npm/v/breezify?logo=npm)
 ![NPM Downloads](https://img.shields.io/npm/dw/breezify?logo=npm)
 ![GitHub License](https://img.shields.io/github/license/glebgorokhov/breezify)
