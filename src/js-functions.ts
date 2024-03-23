@@ -3,6 +3,7 @@ import { AnyNode, Parser } from "acorn";
 import * as walk from "acorn-walk";
 import { generate } from "astring";
 import chalk from "chalk";
+import escapeStringRegexp from "escape-string-regexp";
 import { minify } from "terser";
 
 import { isSelectorString, replaceClassNamesInCSS } from "./css-functions.js";
@@ -36,7 +37,7 @@ export async function replaceClassNamesInJs(
   } = jsOptions;
 
   const ignoreRegExpPatterns = ignoreStringPatterns.map(
-    (pattern) => new RegExp(pattern, "m"),
+    (pattern) => new RegExp(escapeStringRegexp(pattern), "m"),
   );
 
   let newContent = "";
@@ -226,7 +227,7 @@ ${functionCode}
     // Simple mode
     newContent = content;
     for (const [key, value] of Object.entries(unescapedClassMap)) {
-      const regex = new RegExp(`\\b${key}\\b`, "gm");
+      const regex = new RegExp(`\\b${escapeStringRegexp(key)}\\b`, "gm");
       newContent = newContent.replace(regex, value);
     }
   }

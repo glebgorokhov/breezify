@@ -1,5 +1,6 @@
 import * as cssTree from "css-tree";
 import { minify } from "csso";
+import escapeStringRegexp from "escape-string-regexp";
 import fs from "fs";
 
 import { generateClassMap } from "./class-map.js";
@@ -17,12 +18,13 @@ export function extractClassNames(content: string, cssOptions: CSSOptions) {
   const tree = cssTree.parse(content);
 
   const ignoreClassPatterns =
-    cssOptions.ignoreClassPatterns?.map((className) => new RegExp(className)) ||
-    [];
+    cssOptions.ignoreClassPatterns?.map(
+      (className) => new RegExp(escapeStringRegexp(className)),
+    ) || [];
 
   const includeClassPatterns =
     cssOptions.includeClassPatterns?.map(
-      (className) => new RegExp(className),
+      (className) => new RegExp(escapeStringRegexp(className)),
     ) || [];
 
   function shouldInclude(className: string) {

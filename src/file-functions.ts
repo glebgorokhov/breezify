@@ -1,5 +1,6 @@
 // Get a list of all files in the directory and subdirectories
 import chalk from "chalk";
+import escapeStringRegexp from "escape-string-regexp";
 import * as fs from "fs";
 import { globSync } from "glob";
 import * as path from "path";
@@ -59,7 +60,9 @@ export function getFilesInDirectory(filesOptions: FilesOptions) {
 
     if (
       ignore.length &&
-      ignore.some((pattern) => new RegExp(pattern).test(filePath))
+      ignore.some((pattern) =>
+        new RegExp(escapeStringRegexp(pattern)).test(filePath),
+      )
     ) {
       return;
     }
