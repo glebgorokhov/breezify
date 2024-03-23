@@ -98,7 +98,7 @@ new BreezifyWebpack5Plugin({
 
 ## Examples
 
-- Work in progress...
+- See https://github.com/glebgorokhov/breezify-examples
 
 ## Ask Question or Discuss
 
