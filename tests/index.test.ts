@@ -1,5 +1,6 @@
-import { test, describe } from "vitest";
 import * as fs from "fs";
+import { describe, test } from "vitest";
+
 import breezify from "../src";
 
 describe("run breezify on test projects", () => {

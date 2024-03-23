@@ -78,7 +78,9 @@ const { BreezifyWebpack5Plugin } = require("breezify");
 
 module.exports = {
   webpack: (config) => {
-    config.plugins.push(new BreezifyWebpack5Plugin());
+    if (config.mode === "production") {
+      config.plugins.push(new BreezifyWebpack5Plugin());
+    }
     return config;
   },
 }

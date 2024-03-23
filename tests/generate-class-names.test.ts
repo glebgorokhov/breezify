@@ -1,5 +1,6 @@
+import { expect, test } from "vitest";
+
 import { generateObfuscatedNames } from "../src/class-name-generator";
-import { test, expect } from "vitest";
 import { defaultOptions } from "../src/options";
 
 test("generates 10000 unique classes", () => {
