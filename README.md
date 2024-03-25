@@ -14,7 +14,7 @@
 
 Give some fresh air to your production HTML, JS and CSS! Breezify is a library that replaces class names in your build files with shorter ones.
 
-Works with most frameworks. Next.js is now supported!
+Works with most frameworks. __Next.js is not supported yet.__
 
 - [Installation](#installation)
 - [Usage](#usage)
@@ -67,33 +67,6 @@ ESM:
 import breezify from 'breezify';
 
 breezify(options);
-```
-
-### Webpack 5 Plugin (Next.js)
-
-Initialize the plugin in your `next.config.js`:
-
-```js
-const { BreezifyWebpack5Plugin } = require("breezify");
-
-module.exports = {
-  webpack: (config) => {
-    if (config.mode === "production") {
-      config.plugins.push(new BreezifyWebpack5Plugin());
-    }
-    return config;
-  },
-}
-```
-
-You can pass options to the plugin:
-
-```js
-new BreezifyWebpack5Plugin({
-  css: {
-    prefix: "tw-",
-  },
-});
 ```
 
 ## Examples
